@@ -20,7 +20,7 @@ function lib4ri_notif_mail_help($path, $arg){
 function lib4ri_notif_mail_block_info(){
     $blocks['lib4ri_notif_mail'] = array(
         // The name that will appear in the block list.
-        'info' => t('Notification e-mails'),
+        'info' => t('Lib4RI Notification e-mails'),
         // Default setting.
         'cache' => DRUPAL_NO_CACHE,
         'region' => 'sidebar_second',
@@ -92,12 +92,12 @@ function lib4ri_notif_mail_permission() {
  */
 function lib4ri_notif_mail_mail_alter(&$message) {
     if (($message['module'] == 'lib4ri_notif_mail') && ($message['key'] = 'lib4ri_notif_mail_send')) {
+        $message['from'] = 'dora@lib4ri.ch';
         $message['headers'] = array(
             'MIME-Version' => '1.0',
             'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
             'Content-Transfer-Encoding' => '8Bit',
             'X-Mailer' => 'Drupal',
-            'Return-Path' => $message['from'],
         );
     }
 }
