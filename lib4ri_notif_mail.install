@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function lib4ri_notif_mail_schema() {
+        $schema['lib4ri_notif_mail_sent'] = array(
+        'description' => '-',
+        'fields' => array(
+            'id' => array(
+                'description' => 'key',
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE
+            ),
+            'pubid' => array(
+                'description' => '',
+                'type' => 'varchar',
+                'length' => 20,
+            ),
+            'tstmp' => array(
+                'description' => '-',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE
+            ),
+            'mailto' => array(
+                'description' => '-',
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE
+            ),
+            'cc' => array(
+                'description' => '-',
+                'type' => 'varchar',
+                'length' => 255
+            ),
+            'bcc' => array(
+                'description' => '-',
+                'type' => 'varchar',
+                'length' => 255
+            ),
+            'subject' => array(
+                'description' => '-',
+                'type' => 'varchar',
+                'length' => 255
+            )
+        ),
+        'unique keys' => array(
+            'id' => array('id')
+        ),
+        'primary key' => array(
+            'id'
+        )
+    );
+    return $schema;
+}
+
