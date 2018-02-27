@@ -21,3 +21,8 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 Current maintainers:
 
 * [Lib4RI](https://github.com/Lib4RI)
+
+
+##Acknowledgement
+
+Most of the code used to implement the email form come from [Send Mails module](https://www.drupal.org/project/send_mails).
