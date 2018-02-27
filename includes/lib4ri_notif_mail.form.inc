@@ -47,7 +47,7 @@ function lib4ri_notif_mail_form() {
     '#maxlength' => 1000,
     '#title' => t('To'),
     '#required' => TRUE,
-    '#description' => t("Enter the senders mail id separated by comma(,). Example: example@example.com,test@test.com,.."),
+    '#description' => t("Enter the email addresses separated by comma(,)."),
 #    '#default_value' => get_to_default(),
   );
 
@@ -56,7 +56,7 @@ function lib4ri_notif_mail_form() {
       '#size' => 60,
       '#maxlength' => 1000,
       '#title' => t('Cc'),
-      '#description' => t("Enter the senders mail id separated by comma(,). Example: example@example.com,test@test.com,.."),
+      '#description' => t("Enter/edit the email addresses separated by comma(,)."),
 #      '#default_value' => get_cc_default(),
   );
 
@@ -65,7 +65,7 @@ function lib4ri_notif_mail_form() {
       '#size' => 60,
       '#maxlength' => 1000,
       '#title' => t('Bcc'),
-      '#description' => t("Enter the senders mail id separated by comma(,). Example: example@example.com,test@test.com,.."),
+      '#description' => t("Enter/edit the email addresses separated by comma(,)."),
       '#default_value' => get_bcc_default(),
   );
   
@@ -75,7 +75,7 @@ function lib4ri_notif_mail_form() {
     '#maxlength' => 255,
     '#required' => TRUE,
     '#title' => t('Subject'),
-    '#description' => t("Enter the Subject for the mail"),
+    '#description' => t("Enter/edit the Subject for the message"),
 #    '#default_value' => get_subject_default($object),
   );
   $form['body'] = array(
