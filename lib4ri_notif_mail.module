@@ -1,6 +1,6 @@
 <?php
 
-define('LIB4RI_NOTIF_MAIL_FORM_LINK', 'some_link');
+define('LIB4RI_NOTIF_MAIL_FORM_LINK', 'send_email');
 
 /**
  * @file
@@ -76,11 +76,11 @@ function lib4ri_notif_mail_menu() {
 function lib4ri_notif_mail_permission() {
     return array(
         'lib4ri_notif_mail' => array(
-            'title' => t('Access Send Mails Service'),
+            'title' => t('Access notification'),
             'description' => t('User has permission for access the forms'),
         ),
         'advanced_lib4ri_notif_mail' => array(
-            'title' => t('Access Advanced Send Mails Service'),
+            'title' => t('Access Advanced notification'),
             'description' => t('Advanced options like, Role based sending.'),
         ),
     );
