@@ -15,9 +15,11 @@ function lib4ri_notif_mail_form() {
   $pid = $_GET['id'];
   if (!empty($pid)){
       $object = islandora_object_load($pid);
+      $filename = $_GET['file'];
   }
   else{
       $object=NULL;
+      $filename = NULL;
   }
 //  $mods = islandora_bibliography_get_mods($object->id);
 //  $path = drupal_get_path('module', 'lib4ridora');
@@ -105,6 +107,10 @@ function lib4ri_notif_mail_form() {
     '#value' => t('Send'),
   );
   if (!empty($object)){
+      if (!empty($filename)){
+          $form['to_id']['#default_value'] = get_to_default($filename);
+          $form['cc']['#default_value'] = get_cc_default($filename);
+      }
       $form['subject']['#default_value'] = get_subject_default($object);
       $form['body']['#default_value'] = get_body_default($object);
   }

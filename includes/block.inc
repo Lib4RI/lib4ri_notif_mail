@@ -7,7 +7,15 @@
  */
 
 function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
-    $out = l('Send notification',LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => array('id' => $object->id, 'destination' => current_path())));
+    $datastreams = iterator_to_array($object);
+    $filename = array_pop(array_filter($datastreams, 'lib4ridora_multi_embargo_pdf_filter'))->label;
+    $filename = explode('.', $filename)[0];
+    
+    $query = array('id' => $object->id,
+        'destination' => current_path(),);
+    
+    if (!empty($filename)) $query['file'] = $filename;
+    $out = l('Send notification',LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query));
                 
     $query = db_select('lib4ri_notif_mail_sent', 'n')
     ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))

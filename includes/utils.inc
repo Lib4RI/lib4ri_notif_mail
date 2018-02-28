@@ -4,8 +4,67 @@
 /**
  * Custom function to get default To address.
  */
-function get_to_default(){
-    return '';
+function get_to_default($filename){
+    //get file id
+    $fid = db_query('select fid from file_managed where filename like :filename and uri like \'%webform%\' order by timestamp desc limit 1', array(':filename' => '%'.$filename.'%'))->fetchField();
+    
+    //get cid of webform mail components 
+    $res = db_select('webform_component', 'n')
+    ->fields('n', array('cid'))
+    ->condition('form_key', 'email')
+    ->execute();
+    
+    $email_ids = array();
+    foreach ($res as $cid) {
+        $email_ids[] = array(
+            'cid' => t($cid->cid),
+        );
+    }
+    $cid = array_pop($email_ids)['cid'];
+    
+//     //get cid of webform file components
+//     $res = db_select('webform_component', 'n')
+//     ->fields('n', array('cid'))
+//     ->condition('type', 'file')
+//     ->execute();
+    
+//     $file_ids = array();
+//     foreach ($res as $cid) {
+//         $file_ids[] = array(
+//             'cid' => t($cid->cid),
+//         );
+//     }
+    
+    //get submission id
+    $res = db_select('webform_submitted_data', 'n')
+    ->fields('n', array('sid'))
+    ->condition('data', $fid)
+    ->execute();
+    
+    $sub_ids = array();
+    foreach ($res as $sid) {
+        $sub_ids[] = array(
+            'sid' => t($sid->sid),
+        );
+    }    
+    $sid = array_pop($sub_ids)['sid'];
+
+    //get email addresses
+    $res = db_select('webform_submitted_data', 'n')
+    ->fields('n', array('data'))
+    ->condition('sid', $sid)
+    ->condition('cid', $cid)
+    ->execute();
+    
+    $emails_a = array();
+    foreach ($res as $addr) {
+        $emails_a[] = array(
+            'addr' => t($addr->data),
+        );
+    }
+    $email = array_pop($emails_a)['addr'];
+    
+    return $email;
 }
 
 /**
