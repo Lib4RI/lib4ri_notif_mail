@@ -13,6 +13,7 @@ function lib4ri_notif_mail_form() {
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
   $pid = $_GET['id'];
+  $lang = $_GET['lang'];
   if (!empty($pid)){
       $object = islandora_object_load($pid);
       $filename = $_GET['file'];
@@ -112,7 +113,7 @@ function lib4ri_notif_mail_form() {
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
       $form['subject']['#default_value'] = get_subject_default($object);
-      $form['body']['#default_value'] = get_body_default($object);
+      $form['body']['#default_value'] = get_body_default($object, $lang);
   }
     return $form;
 }
