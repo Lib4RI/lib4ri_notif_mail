@@ -147,13 +147,19 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/lib4ri_notif_mail.query');
   // From Address from user login.
-//   if ($user->uid) {
-//     $from = $user->mail;
-//   }
-//   else {
-//     $from = variable_get('site_mail', '');
-//   }
-  $from = 'dora@lib4ri.ch';
+  if ($user->uid) {
+//      $from = '<dora@lib4ri.ch> in behalf of '.$user->name.' ('.$user->mail.')';
+      $from = "\"{$user->name}\" <{$user->mail}>";
+      $sender = '"DORA Lib4RI" <dora@lib4ri.ch>';
+      $ret_path = 'dora@lib4ri.ch';
+      $reply_to = 'dora@lib4ri.ch';
+  }
+  else {
+    $from = variable_get('site_mail', '');
+    $sender = $from;
+    $ret_path = $from;
+  }
+
   $module = 'lib4ri_notif_mail';
   $language = language_default();
   $file = file_load($form_state['values']['files']);
@@ -181,8 +187,9 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
       'Cc' => $form_state['values']['cc'],
       'Bcc' => $form_state['values']['bcc'],
       'From' => $message['from'],
-      'Sender' => $message['from'],
-      'Return-Path' => $message['from'],
+      'Sender' => $sender,
+      'Return-Path' => $ret_path,
+      'Reply-To' => $reply_to,
   );
   $system = drupal_mail_system($module, $key);
   $message = $system->format($message);
