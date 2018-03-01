@@ -120,7 +120,17 @@ function get_bcc_default(){
  */
 function get_subject_default(AbstractObject $object){
     if (empty($object)) {return '';}
-    return t('Your publication "'.$object->label.'" is now available in DORA');
+    $subject = $object->label;
+    $point = 0;
+    if (strlen($subject)>40){
+        $subject .= ' ';
+        while ($point<40){
+            $prev = $point;
+            $point = strpos($subject, ' ', $point+1);        
+        }
+        $subject = substr($subject, 0, $point+1).'...';
+    }
+    return t('Your publication "'.$subject.'" is now available in DORA');
 }
 
 /**
