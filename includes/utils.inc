@@ -120,7 +120,7 @@ function get_bcc_default(){
  */
 function get_subject_default(AbstractObject $object){
     if (empty($object)) {return '';}
-    return t('Your publication "'.$object->label.'" is available in DORA');
+    return t('Your publication "'.$object->label.'" is now available in DORA');
 }
 
 /**
