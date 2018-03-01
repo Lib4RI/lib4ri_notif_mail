@@ -200,13 +200,27 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
 }
 
 function lib4ri_notif_mail_admin_form() {
-    $form['lib4ri_notif_mail_settings'] = array(
+    $form['lib4ri_notif_mail_to_auto_field'] = array(
         '#type' => 'textfield',
-        '#title' => t('Maximum number of posts'),
-        '#default_value' => variable_get('current_posts_max', 3),
+        '#title' => t('Webform field for "To" autofill'),
+        '#default_value' => variable_get('lib4ri_notif_mail_to_auto_field', 'email'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+    $form['lib4ri_notif_mail_cc_auto_field'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Webform field for "Cc" autofill'),
+        '#default_value' => variable_get('lib4ri_notif_mail_cc_auto_field', 'email2'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+    $form['lib4ri_notif_mail_subj_trunc'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Max title length in Subject field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subj_trunc', 40),
         '#size' => 2,
         '#maxlength' => 2,
-        '#description' => t('The maximum number of links to display in the block.'),
+        '#description' => t(''),
         '#required' => TRUE,
     );
     

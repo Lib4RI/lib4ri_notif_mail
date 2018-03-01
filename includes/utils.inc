@@ -5,13 +5,15 @@
  * Custom function to get default To address.
  */
 function get_to_default($filename){
+    $field = variable_get('lib4ri_notif_mail_to_auto_field');
+    
     //get file id
     $fid = db_query('select fid from file_managed where filename like :filename and uri like \'%webform%\' order by timestamp desc limit 1', array(':filename' => '%'.$filename.'%'))->fetchField();
     
     //get cid of webform mail components 
     $res = db_select('webform_component', 'n')
     ->fields('n', array('cid'))
-    ->condition('form_key', 'email')
+    ->condition('form_key', $field)
     ->execute();
     
     $email_ids = array();
@@ -58,13 +60,15 @@ function get_to_default($filename){
  * Custom function to get default Cc address.
  */
 function get_cc_default(){
+    $field = variable_get('lib4ri_notif_mail_cc_auto_field');
+    
     //get file id
     $fid = db_query('select fid from file_managed where filename like :filename and uri like \'%webform%\' order by timestamp desc limit 1', array(':filename' => '%'.$filename.'%'))->fetchField();
     
     //get cid of webform mail components
     $res = db_select('webform_component', 'n')
     ->fields('n', array('cid'))
-    ->condition('form_key', 'email2')
+    ->condition('form_key', $field)
     ->execute();
     
     $email_ids = array();
@@ -118,12 +122,13 @@ function get_bcc_default(){
  * Custom function to get default Subject.
  */
 function get_subject_default(AbstractObject $object){
+    $len = variable_get('lib4ri_notif_mail_subj_trunc');
     if (empty($object)) {return '';}
     $subject = $object->label;
     $point = 0;
-    if (strlen($subject)>40){
+    if (strlen($subject)>$len){
         $subject .= ' ';
-        while ($point<40){
+        while ($point<$len){
             $prev = $point;
             $point = strpos($subject, ' ', $point+1);        
         }
