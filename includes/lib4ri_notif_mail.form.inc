@@ -188,5 +188,5 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
   $message = $system->format($message);
   $message['result'] = $system->mail($message);
   save_mail_data($form_state['values']['object_id'], $email, $message);
-  drupal_set_message(t('Your mail sent successfully!'));
+  drupal_set_message(t('Your e-mail was sent successfully!'));
 }
