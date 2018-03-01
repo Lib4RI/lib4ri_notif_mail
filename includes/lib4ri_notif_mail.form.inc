@@ -13,6 +13,7 @@ function lib4ri_notif_mail_form() {
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
   $pid = $_GET['id'];
+  $lang = $_GET['lang'];
   if (!empty($pid)){
       $object = islandora_object_load($pid);
       $filename = $_GET['file'];
@@ -90,18 +91,18 @@ function lib4ri_notif_mail_form() {
     '#attributes' => array('class' => array('text-full')),
 #    '#default_value' => get_body_default($object),
   );
-  $form['files'] = array(
-    '#title' => t('Attachment'),
-    '#type' => 'managed_file',
-    '#name' => 'files[]',
-    '#attributes' => array('multiple' => 'multiple'),
-    '#upload_location' => 'public://sen_mails/',
-    '#description' => t("Upload up to 5MB files."),
-    '#upload_validators' => array(
-      'file_validate_extensions' => array('zip tar tgz taz z gz rar gif png jpg jpeg doc xls ppt sxw sxc sxi sdw sdc sdd pdf'),
-      'file_validate_size' => array(5000000),
-    ),
-  );
+//   $form['files'] = array(
+//     '#title' => t('Attachment'),
+//     '#type' => 'managed_file',
+//     '#name' => 'files[]',
+//     '#attributes' => array('multiple' => 'multiple'),
+//     '#upload_location' => 'public://sen_mails/',
+//     '#description' => t("Upload up to 5MB files."),
+//     '#upload_validators' => array(
+//       'file_validate_extensions' => array('zip tar tgz taz z gz rar gif png jpg jpeg doc xls ppt sxw sxc sxi sdw sdc sdd pdf'),
+//       'file_validate_size' => array(5000000),
+//     ),
+//  );
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Send'),
@@ -112,7 +113,7 @@ function lib4ri_notif_mail_form() {
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
       $form['subject']['#default_value'] = get_subject_default($object);
-      $form['body']['#default_value'] = get_body_default($object);
+      $form['body']['#default_value'] = get_body_default($object, $lang);
   }
     return $form;
 }
@@ -147,13 +148,19 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/lib4ri_notif_mail.query');
   // From Address from user login.
-//   if ($user->uid) {
-//     $from = $user->mail;
-//   }
-//   else {
-//     $from = variable_get('site_mail', '');
-//   }
-  $from = 'dora@lib4ri.ch';
+  if ($user->uid) {
+//      $from = '<dora@lib4ri.ch> in behalf of '.$user->name.' ('.$user->mail.')';
+      $from = "\"{$user->name}\" <{$user->mail}>";
+      $sender = '"DORA Lib4RI" <dora@lib4ri.ch>';
+      $ret_path = 'dora@lib4ri.ch';
+      $reply_to = 'dora@lib4ri.ch';
+  }
+  else {
+    $from = variable_get('site_mail', '');
+    $sender = $from;
+    $ret_path = $from;
+  }
+
   $module = 'lib4ri_notif_mail';
   $language = language_default();
   $file = file_load($form_state['values']['files']);
@@ -181,14 +188,15 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
       'Cc' => $form_state['values']['cc'],
       'Bcc' => $form_state['values']['bcc'],
       'From' => $message['from'],
-      'Sender' => $message['from'],
-      'Return-Path' => $message['from'],
+      'Sender' => $sender,
+      'Return-Path' => $ret_path,
+      'Reply-To' => $reply_to,
   );
   $system = drupal_mail_system($module, $key);
   $message = $system->format($message);
   $message['result'] = $system->mail($message);
   save_mail_data($form_state['values']['object_id'], $email, $message);
-  drupal_set_message(t('Your mail sent successfully!'));
+  drupal_set_message(t('Your e-mail was sent successfully!'));
 }
 
 function lib4ri_notif_mail_admin_form() {

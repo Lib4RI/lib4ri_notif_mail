@@ -15,7 +15,10 @@ function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
         'destination' => current_path(),);
     
     if (!empty($filename)) $query['file'] = $filename;
-    $out = l('Send notification',LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query));
+    $query['lang'] = 'en';
+    $out = l('Send notification (English)',LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query)).'<br>';
+    $query['lang'] = 'de';
+    $out .= l('Benachrichtigung senden (Deutsch)',LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query));
                 
     $query = db_select('lib4ri_notif_mail_sent', 'n')
     ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))
