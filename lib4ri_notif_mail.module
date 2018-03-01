@@ -60,6 +60,17 @@ function lib4ri_notif_mail_menu() {
         'access arguments' => array('lib4ri_notif_mail'),
         'file' => 'includes/lib4ri_notif_mail.form.inc',
     );
+    
+    $items['admin/config/workflow/lib4ri_notif_mail'] = array(
+        'title' => 'Email notification',
+        'description' => 'Settings for the authors email notification module',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('lib4ri_notif_mail_admin_form'),
+        'access arguments' => array('administer site configuration'),
+        'file' => 'includes/lib4ri_notif_mail.form.inc',
+        'type' => MENU_NORMAL_ITEM,
+    );
+    
 //     $items['send-mails/mailids'] = array(
 //         'title' => 'Send Mails Autocomplete',
 //         'page callback' => 'lib4ri_notif_mail_mailids_autocomplete',
@@ -101,5 +112,6 @@ function lib4ri_notif_mail_mail_alter(&$message) {
         );
     }
 }
+
 
 

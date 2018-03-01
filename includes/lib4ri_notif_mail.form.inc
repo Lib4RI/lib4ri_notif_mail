@@ -190,3 +190,17 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
   save_mail_data($form_state['values']['object_id'], $email, $message);
   drupal_set_message(t('Your mail sent successfully!'));
 }
+
+function lib4ri_notif_mail_admin_form() {
+    $form['lib4ri_notif_mail_settings'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Maximum number of posts'),
+        '#default_value' => variable_get('current_posts_max', 3),
+        '#size' => 2,
+        '#maxlength' => 2,
+        '#description' => t('The maximum number of links to display in the block.'),
+        '#required' => TRUE,
+    );
+    
+    return system_settings_form($form);
+}
