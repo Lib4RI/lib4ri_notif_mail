@@ -111,8 +111,7 @@ function get_cc_default(){
  * Custom function to get default Bcc address.
  */
 function get_bcc_default(){
-    global $user;
-    return t($user->mail);
+    return t('dora@lib4ri.ch');
 }
 
 /**
