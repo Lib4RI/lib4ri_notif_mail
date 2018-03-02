@@ -158,7 +158,7 @@ function get_tokens_data(AbstractObject $object){
     
     $data = array('title' => $object->label,
                   'titleshort' => $short,
-                  'signature' => $user->name,
+                  'signature' => field_get_items('user',user_load($user->uid),'field_full_name')[0]['value'],
                   'objecturl' => url("$base_url/islandora/object/{$object->id}")
     );
     
