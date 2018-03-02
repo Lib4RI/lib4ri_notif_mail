@@ -240,7 +240,7 @@ function lib4ri_notif_mail_admin_form() {
     );
     $form['lib4ri_notif_mail_link_en'] = array(
         '#type' => 'textfield',
-        '#title' => t('Max title length in Subject field'),
+        '#title' => t('English email link text'),
         '#default_value' => variable_get('lib4ri_notif_mail_link_en', 'Send notification (EN)'),
         '#size' => 40,
         '#maxlength' => 40,
@@ -249,7 +249,7 @@ function lib4ri_notif_mail_admin_form() {
     );
     $form['lib4ri_notif_mail_link_de'] = array(
         '#type' => 'textfield',
-        '#title' => t('Max title length in Subject field'),
+        '#title' => t('German email link text'),
         '#default_value' => variable_get('lib4ri_notif_mail_link_de', 'Benachrichtigung senden (DE)'),
         '#size' => 40,
         '#maxlength' => 40,
