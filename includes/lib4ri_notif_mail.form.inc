@@ -212,7 +212,7 @@ function lib4ri_notif_mail_admin_form() {
         '#default_value' => variable_get('lib4ri_notif_mail_link_en', 'Send notification (EN)'),
         '#size' => 40,
         '#maxlength' => 40,
-        '#description' => t(''),
+        '#description' => t('The text of the block link to the English version of the email'),
         '#required' => TRUE,
         '#states' => array(
             'visible' => array(
@@ -231,7 +231,7 @@ function lib4ri_notif_mail_admin_form() {
         '#default_value' => variable_get('lib4ri_notif_mail_link_de', 'Benachrichtigung senden (DE)'),
         '#size' => 40,
         '#maxlength' => 40,
-        '#description' => t(''),
+        '#description' => t('The text of the block link to the German version of the email'),
         '#required' => TRUE,
         '#states' => array(
             'visible' => array(
@@ -249,7 +249,7 @@ function lib4ri_notif_mail_admin_form() {
         '#type' => 'textfield',
         '#title' => t('Webform field for "To" autofill'),
         '#default_value' => variable_get('lib4ri_notif_mail_to_auto_field', 'email'),
-        '#description' => t(''),
+        '#description' => t('The id of the webform field to be used to look for email addresses'),
         '#required' => TRUE,
         '#states' => array(
             'visible' => array(
@@ -261,7 +261,7 @@ function lib4ri_notif_mail_admin_form() {
         '#type' => 'textfield',
         '#title' => t('Webform field for "Cc" autofill'),
         '#default_value' => variable_get('lib4ri_notif_mail_cc_auto_field', 'email2'),
-        '#description' => t(''),
+        '#description' => t('The id of the webform field to be used to look for email addresses'),
         '#required' => TRUE,
         '#states' => array(
             'visible' => array(
@@ -271,11 +271,11 @@ function lib4ri_notif_mail_admin_form() {
     );
     $form['lib4ri_notif_mail_subj_trunc'] = array(
         '#type' => 'textfield',
-        '#title' => t('Max title length in Subject field'),
+        '#title' => t('Length for title truncation'),
         '#default_value' => variable_get('lib4ri_notif_mail_subj_trunc', 40),
         '#size' => 2,
         '#maxlength' => 2,
-        '#description' => t(''),
+        '#description' => t('The max allowed length for the title provided by the [lib4ri_notif_mail:titleshort] token'),
     );
     $form['lib4ri_notif_mail_subject'] = array(
         '#type' => 'textfield',
