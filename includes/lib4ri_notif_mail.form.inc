@@ -17,6 +17,7 @@ function lib4ri_notif_mail_form() {
   if (!empty($pid)){
       $object = islandora_object_load($pid);
       $filename = $_GET['file'];
+      $replacements_data = get_tokens_data($object);
   }
   else{
       $object=NULL;
@@ -112,7 +113,7 @@ function lib4ri_notif_mail_form() {
           $form['to_id']['#default_value'] = get_to_default($filename);
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
-      $form['subject']['#default_value'] = get_subject_default($object);
+      $form['subject']['#default_value'] = get_subject_default($object,$replacements_data);
       $form['body']['#default_value'] = get_body_default($object, $lang);
   }
     return $form;
@@ -200,44 +201,6 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
 }
 
 function lib4ri_notif_mail_admin_form() {
-    $form['lib4ri_notif_mail_auto_field_flag'] = array(
-        '#type' => 'checkbox',
-        '#default_value' => variable_get('lib4ri_notif_mail_auto_field_flag', TRUE),
-        '#title' => t('Attempt "To" and "Cc" autofill'),
-    );  
-    $form['lib4ri_notif_mail_to_auto_field'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Webform field for "To" autofill'),
-        '#default_value' => variable_get('lib4ri_notif_mail_to_auto_field', 'email'),
-        '#description' => t(''),
-        '#required' => TRUE,
-        '#states' => array(
-            'visible' => array(
-                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
-            ),
-        ),
-    );
-    $form['lib4ri_notif_mail_cc_auto_field'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Webform field for "Cc" autofill'),
-        '#default_value' => variable_get('lib4ri_notif_mail_cc_auto_field', 'email2'),
-        '#description' => t(''),
-        '#required' => TRUE,
-        '#states' => array(
-            'visible' => array(
-                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
-            ),
-        ),
-    );
-    $form['lib4ri_notif_mail_subj_trunc'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Max title length in Subject field'),
-        '#default_value' => variable_get('lib4ri_notif_mail_subj_trunc', 40),
-        '#size' => 2,
-        '#maxlength' => 2,
-        '#description' => t(''),
-        '#required' => TRUE,
-    );
     $form['lib4ri_notif_mail_link_en_flag'] = array(
         '#type' => 'checkbox',
         '#default_value' => variable_get('lib4ri_notif_mail_link_en_flag', TRUE),
@@ -276,6 +239,51 @@ function lib4ri_notif_mail_admin_form() {
             ),
         ),
     );
+    
+    $form['lib4ri_notif_mail_auto_field_flag'] = array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('lib4ri_notif_mail_auto_field_flag', TRUE),
+        '#title' => t('Attempt "To" and "Cc" autofill'),
+    );  
+    $form['lib4ri_notif_mail_to_auto_field'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Webform field for "To" autofill'),
+        '#default_value' => variable_get('lib4ri_notif_mail_to_auto_field', 'email'),
+        '#description' => t(''),
+        '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    $form['lib4ri_notif_mail_cc_auto_field'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Webform field for "Cc" autofill'),
+        '#default_value' => variable_get('lib4ri_notif_mail_cc_auto_field', 'email2'),
+        '#description' => t(''),
+        '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    $form['lib4ri_notif_mail_subj_trunc'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Max title length in Subject field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subj_trunc', 40),
+        '#size' => 2,
+        '#maxlength' => 2,
+        '#description' => t(''),
+    );
+    $form['lib4ri_notif_mail_subject'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Email subject'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subject', 'Your publication [lib4ri_notif_mail:titleshort] is now available in DORA'),
+        '#description' => t('The text of the email subject'),
+    );
+    
     
     return system_settings_form($form);
 }

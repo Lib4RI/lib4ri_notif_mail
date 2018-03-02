@@ -114,4 +114,33 @@ function lib4ri_notif_mail_mail_alter(&$message) {
 }
 
 
+/**
+ * Implements hook_token_info(). 
+ */
+function lib4ri_notif_mail_token_info() {
+    $info['tokens']['lib4ri_notif_mail']['title'] = array(
+        'name' => t('Title'),
+        'description' => t('The publication title '),
+    );
+    $info['tokens']['lib4ri_notif_mail']['titleshort'] = array(
+        'name' => t('Trunkated title'),
+        'description' => t('The trunkated publication title '),
+    );
+    return $info;
+}
 
+/**
+ * Implements hook_tokens(). This hook will operate the token and replace it with it's value.
+ */
+function lib4ri_notif_mail_tokens($type, $tokens, array $data = array(), array $options = array()) {
+    $replacements = array();
+    $sanitize = !empty($options['sanitize']);
+    if ($type == 'lib4ri_notif_mail') {
+        foreach ($tokens as $name => $original) {
+            if (array_key_exists($name, $data)) {
+                $replacements[$original] = $data[$name];
+            }
+        }
+    }
+    return $replacements;
+}

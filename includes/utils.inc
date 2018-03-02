@@ -121,20 +121,9 @@ function get_bcc_default(){
 /**
  * Custom function to get default Subject.
  */
-function get_subject_default(AbstractObject $object){
-    $len = variable_get('lib4ri_notif_mail_subj_trunc');
-    if (empty($object)) {return '';}
-    $subject = $object->label;
-    $point = 0;
-    if (strlen($subject)>$len){
-        $subject .= ' ';
-        while ($point<$len){
-            $prev = $point;
-            $point = strpos($subject, ' ', $point+1);        
-        }
-        $subject = substr($subject, 0, $point+1).'...';
-    }
-    return t('Your publication "'.$subject.'" is now available in DORA');
+function get_subject_default(AbstractObject $object, $replacement_data){
+    $subject = token_replace(variable_get('lib4ri_notif_mail_subject'), $replacement_data);
+    return $subject;
 }
 
 /**
@@ -166,3 +155,27 @@ function get_body_default(AbstractObject $object, $lang){
     return $rows;
 }
 
+function get_tokens_data(AbstractObject $object){
+    global $user;
+    global $base_url;
+    $len = variable_get('lib4ri_notif_mail_subj_trunc');
+    if (empty($object)) {return '';}
+    $short = $object->label;
+    $point = 0;
+    if (strlen($short)>$len){
+        $short .= ' ';
+        while ($point<$len){
+            $prev = $point;
+            $point = strpos($short, ' ', $point+1);
+        }
+        $short = substr($short, 0, $point).'...';
+    }
+    
+    $data = array('title' => $object->label,
+                  'titleshort' => $short,
+                  'signature' => $user->name,
+                  'objecturl' => url("$base_url/islandora/object/{$object->id}")
+    );
+    
+    return $data;
+}
