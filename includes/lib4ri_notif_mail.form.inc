@@ -316,7 +316,7 @@ Wir bitten Sie/dich die Metadata zu kontrollieren – insbesondere die Verlinkun
 Viele Grüsse
             
 [lib4ri_notif_mail:signature]")),
-        '#description' => t('The English version of the body of the email'),
+        '#description' => t('The German version of the body of the email'),
         '#states' => array(
             'visible' => array(
                 ':input[name="lib4ri_notif_mail_link_de_flag"]' => array('checked' => TRUE),
