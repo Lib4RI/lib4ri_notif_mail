@@ -15,10 +15,14 @@ function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
         'destination' => current_path(),);
     
     if (!empty($filename)) $query['file'] = $filename;
-    $query['lang'] = 'en';
-    $out = l(variable_get('lib4ri_notif_mail_link_en'),LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query)).'<br>';
-    $query['lang'] = 'de';
-    $out .= l(variable_get('lib4ri_notif_mail_link_de'),LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query));
+    if (variable_get('lib4ri_notif_mail_link_en_flag')){
+        $query['lang'] = 'en';
+        $out = l(variable_get('lib4ri_notif_mail_link_en'),LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query)).'<br>';
+    }
+    if (variable_get('lib4ri_notif_mail_link_de_flag')){
+        $query['lang'] = 'de';
+        $out .= l(variable_get('lib4ri_notif_mail_link_de'),LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query)).'<br>';
+    }
                 
     $query = db_select('lib4ri_notif_mail_sent', 'n')
     ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))
@@ -39,9 +43,9 @@ function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
     
     if (!empty($items)){
         if (count($items)==1)
-            $out .= '<br><br> Sent message: <br>';
+            $out .= '<br> Sent message: <br>';
         else 
-            $out .= '<br><br> Sent messages: <br>';
+            $out .= '<br> Sent messages: <br>';
         foreach ($items as $item){
             $out .= '
                 <fieldset class="webform-component-fieldset collapsible collapsed form-wrapper">

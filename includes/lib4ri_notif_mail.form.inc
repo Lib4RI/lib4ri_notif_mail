@@ -238,6 +238,11 @@ function lib4ri_notif_mail_admin_form() {
         '#description' => t(''),
         '#required' => TRUE,
     );
+    $form['lib4ri_notif_mail_link_en_flag'] = array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('lib4ri_notif_mail_link_en_flag', TRUE),
+        '#title' => t('Show English link'),
+    );
     $form['lib4ri_notif_mail_link_en'] = array(
         '#type' => 'textfield',
         '#title' => t('English email link text'),
@@ -246,6 +251,16 @@ function lib4ri_notif_mail_admin_form() {
         '#maxlength' => 40,
         '#description' => t(''),
         '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    $form['lib4ri_notif_mail_link_de_flag'] = array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('lib4ri_notif_mail_link_de_flag', TRUE),
+        '#title' => t('Show German link'),
     );
     $form['lib4ri_notif_mail_link_de'] = array(
         '#type' => 'textfield',
@@ -255,6 +270,11 @@ function lib4ri_notif_mail_admin_form() {
         '#maxlength' => 40,
         '#description' => t(''),
         '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_de_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     
     return system_settings_form($form);
