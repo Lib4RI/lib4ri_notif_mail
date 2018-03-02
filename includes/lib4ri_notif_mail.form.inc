@@ -108,7 +108,7 @@ function lib4ri_notif_mail_form() {
     '#value' => t('Send'),
   );
   if (!empty($object)){
-      if (!empty($filename)){
+      if (!empty($filename) && variable_get('lib4ri_notif_mail_auto_field_flag')){
           $form['to_id']['#default_value'] = get_to_default($filename);
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
@@ -200,12 +200,22 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
 }
 
 function lib4ri_notif_mail_admin_form() {
+    $form['lib4ri_notif_mail_auto_field_flag'] = array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('lib4ri_notif_mail_auto_field_flag', TRUE),
+        '#title' => t('Attempt "To" and "Cc" autofill'),
+    );  
     $form['lib4ri_notif_mail_to_auto_field'] = array(
         '#type' => 'textfield',
         '#title' => t('Webform field for "To" autofill'),
         '#default_value' => variable_get('lib4ri_notif_mail_to_auto_field', 'email'),
         '#description' => t(''),
         '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     $form['lib4ri_notif_mail_cc_auto_field'] = array(
         '#type' => 'textfield',
@@ -213,6 +223,11 @@ function lib4ri_notif_mail_admin_form() {
         '#default_value' => variable_get('lib4ri_notif_mail_cc_auto_field', 'email2'),
         '#description' => t(''),
         '#required' => TRUE,
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_auto_field_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     $form['lib4ri_notif_mail_subj_trunc'] = array(
         '#type' => 'textfield',
