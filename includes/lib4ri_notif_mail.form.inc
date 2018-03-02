@@ -282,6 +282,11 @@ function lib4ri_notif_mail_admin_form() {
         '#title' => t('Email subject (EN)'),
         '#default_value' => variable_get('lib4ri_notif_mail_subject_en', 'Your publication "[lib4ri_notif_mail:titleshort]" is now available in DORA'),
         '#description' => t('The Egnlish version of the email subject'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     $form['lib4ri_notif_mail_body_en'] = array(
         '#type' => 'textarea',
@@ -308,6 +313,11 @@ Kind regards,
         '#title' => t('Email subject (DE)'),
         '#default_value' => variable_get('lib4ri_notif_mail_subject_de', 'Ihre/deine Publikation "[lib4ri_notif_mail:titleshort]" ist jetzt in DORA verfügbar'),
         '#description' => t('The German version of the email subject'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_de_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     
     $form['lib4ri_notif_mail_body_de'] = array(
