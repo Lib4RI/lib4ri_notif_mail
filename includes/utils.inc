@@ -129,29 +129,12 @@ function get_subject_default(AbstractObject $object, $replacement_data){
 /**
  * Custom function to get default body.
  */
-function get_body_default(AbstractObject $object, $lang){
+function get_body_default(AbstractObject $object, $lang, $replacement_data){
     if (empty($object)) {return '';}
-    global $base_url;
-    global $user;
-    if ($lang == 'de'){
-        $rows = t('Guten Tag'."\n\n".
-            'Vielen Dank für die Publikation. Sie ist nun online verfügbar:'."\n".
-            url("$base_url/islandora/object/{$object->id}")."\n".
-                'Wir bitten Sie/dich die Metadata zu kontrollieren – insbesondere die Verlinkungen von Autoren und Abteilungen – und uns zu informieren wenn Sie/du Fehler finden/findest oder Fragen haben/hast.'."\n\n".
-                'Viele Grüsse'."\n\n".
-                $user->name
-            );
-    }
     
-    else{
-        $rows = t('Good day,'."\n\n".
-            'Thank you very much for your publication. “'.$object->label.'” is now available in DORA:'."\n".
-            url("$base_url/islandora/object/{$object->id}")."\n".
-                'Please take a moment to check the metadata – in particular the linkage to the authors and departments – and let us know if you find any errors or if you have any questions.'."\n\n".
-                'Kind regards,'."\n\n".
-                $user->name
-            );
-    }
+    if ($lang == 'de'){$rows = token_replace(variable_get('lib4ri_notif_mail_body_de'), $replacement_data);}
+    else{$rows = token_replace(variable_get('lib4ri_notif_mail_body_en'), $replacement_data);}
+    
     return $rows;
 }
 

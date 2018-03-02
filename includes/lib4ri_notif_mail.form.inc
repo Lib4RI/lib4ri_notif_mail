@@ -113,8 +113,8 @@ function lib4ri_notif_mail_form() {
           $form['to_id']['#default_value'] = get_to_default($filename);
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
-      $form['subject']['#default_value'] = get_subject_default($object,$replacements_data);
-      $form['body']['#default_value'] = get_body_default($object, $lang);
+      $form['subject']['#default_value'] = get_subject_default($object, $replacements_data);
+      $form['body']['#default_value'] = get_body_default($object, $lang, $replacements_data);
   }
     return $form;
 }
@@ -280,8 +280,48 @@ function lib4ri_notif_mail_admin_form() {
     $form['lib4ri_notif_mail_subject'] = array(
         '#type' => 'textfield',
         '#title' => t('Email subject'),
-        '#default_value' => variable_get('lib4ri_notif_mail_subject', 'Your publication [lib4ri_notif_mail:titleshort] is now available in DORA'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subject', 'Your publication \"[lib4ri_notif_mail:titleshort]\" is now available in DORA'),
         '#description' => t('The text of the email subject'),
+    );
+    $form['lib4ri_notif_mail_body_en'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Email body (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_body_en', t(
+"Good day,
+
+Thank you very much for your publication. \"[lib4ri_notif_mail:title]\" is now available in DORA:
+[lib4ri_notif_mail:objecturl]
+Please take a moment to check the metadata – in particular the linkage to the authors and departments – and let us know if you find any errors or if you have any questions
+
+Kind regards,
+
+[lib4ri_notif_mail:signature]")),
+        '#description' => t('The English version of the body of the email'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    $form['lib4ri_notif_mail_body_de'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Email body (DE)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_body_de', t(
+"Guten Tag
+            
+Vielen Dank für die Publikation. \"[lib4ri_notif_mail:title]\" ist nun online verfügbar:
+[lib4ri_notif_mail:objecturl]
+Wir bitten Sie/dich die Metadata zu kontrollieren – insbesondere die Verlinkungen von Autoren und Abteilungen – und uns zu informieren wenn Sie/du Fehler finden/findest oder Fragen haben/hast.
+            
+Viele Grüsse
+            
+[lib4ri_notif_mail:signature]")),
+        '#description' => t('The English version of the body of the email'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_de_flag"]' => array('checked' => TRUE),
+            ),
+        ),
     );
     
     
