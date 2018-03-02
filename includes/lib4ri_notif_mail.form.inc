@@ -113,7 +113,7 @@ function lib4ri_notif_mail_form() {
           $form['to_id']['#default_value'] = get_to_default($filename);
           $form['cc']['#default_value'] = get_cc_default($filename);
       }
-      $form['subject']['#default_value'] = get_subject_default($object, $replacements_data);
+      $form['subject']['#default_value'] = get_subject_default($object, $lang, $replacements_data);
       $form['body']['#default_value'] = get_body_default($object, $lang, $replacements_data);
   }
     return $form;
@@ -277,11 +277,11 @@ function lib4ri_notif_mail_admin_form() {
         '#maxlength' => 2,
         '#description' => t('The max allowed length for the title provided by the [lib4ri_notif_mail:titleshort] token'),
     );
-    $form['lib4ri_notif_mail_subject'] = array(
+    $form['lib4ri_notif_mail_subject_en'] = array(
         '#type' => 'textfield',
-        '#title' => t('Email subject'),
-        '#default_value' => variable_get('lib4ri_notif_mail_subject', 'Your publication \"[lib4ri_notif_mail:titleshort]\" is now available in DORA'),
-        '#description' => t('The text of the email subject'),
+        '#title' => t('Email subject (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subject_en', 'Your publication "[lib4ri_notif_mail:titleshort]" is now available in DORA'),
+        '#description' => t('The Egnlish version of the email subject'),
     );
     $form['lib4ri_notif_mail_body_en'] = array(
         '#type' => 'textarea',
@@ -303,6 +303,13 @@ Kind regards,
             ),
         ),
     );
+    $form['lib4ri_notif_mail_subject_de'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Email subject (DE)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_subject_de', 'Ihre/deine Publikation "[lib4ri_notif_mail:titleshort]" ist jetzt in DORA verfügbar'),
+        '#description' => t('The German version of the email subject'),
+    );
+    
     $form['lib4ri_notif_mail_body_de'] = array(
         '#type' => 'textarea',
         '#title' => t('Email body (DE)'),

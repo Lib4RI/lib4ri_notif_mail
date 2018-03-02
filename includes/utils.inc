@@ -121,8 +121,10 @@ function get_bcc_default(){
 /**
  * Custom function to get default Subject.
  */
-function get_subject_default(AbstractObject $object, $replacement_data){
-    $subject = token_replace(variable_get('lib4ri_notif_mail_subject'), $replacement_data);
+function get_subject_default(AbstractObject $object, $lang, $replacement_data){
+    if ($lang == 'de'){$subject = token_replace(variable_get('lib4ri_notif_mail_subject_de'), $replacement_data);}
+    else{$subject = token_replace(variable_get('lib4ri_notif_mail_subject_en'), $replacement_data);}
+    
     return $subject;
 }
 
