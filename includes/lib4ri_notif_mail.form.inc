@@ -223,6 +223,24 @@ function lib4ri_notif_mail_admin_form() {
         '#description' => t(''),
         '#required' => TRUE,
     );
+    $form['lib4ri_notif_mail_link_en'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Max title length in Subject field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_link_en', 'Send notification (EN)'),
+        '#size' => 40,
+        '#maxlength' => 40,
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+    $form['lib4ri_notif_mail_link_de'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Max title length in Subject field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_link_de', 'Benachrichtigung senden (DE)'),
+        '#size' => 40,
+        '#maxlength' => 40,
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
     
     return system_settings_form($form);
 }
