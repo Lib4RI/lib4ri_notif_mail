@@ -149,7 +149,8 @@ function get_tokens_data(AbstractObject $object){
     global $base_url;
     $len = variable_get('lib4ri_notif_mail_subj_trunc');
     if (empty($object)) {return '';}
-    $short = $object->label;
+    $long = drupal_html_to_text($object->label);
+    $short = $long;
     $point = 0;
     if (strlen($short)>$len){
         $short .= ' ';
@@ -160,7 +161,7 @@ function get_tokens_data(AbstractObject $object){
         $short = substr($short, 0, $point).'...';
     }
     
-    $data = array('title' => $object->label,
+    $data = array('title' => $long,
                   'titleshort' => $short,
                   'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
                   'objecturl' => url("$base_url/islandora/object/{$object->id}")
