@@ -230,7 +230,7 @@ function lib4ri_notif_mail_admin_form() {
     $form['lib4ri_notif_mail_link_de'] = array(
         '#type' => 'textfield',
         '#title' => t('German email link text'),
-        '#default_value' => variable_get('lib4ri_notif_mail_link_de', 'Benachrichtigung senden (DE)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_link_de', 'Send notification (DE)'),
         '#size' => 40,
         '#maxlength' => 40,
         '#description' => t('The text of the block link to the German version of the email'),
