@@ -343,6 +343,19 @@ Viele Grüsse
         ),
     );
     
+    $form['lib4ri_notif_mail_sig_fname'] = array(
+        '#type' => 'textfield',
+        '#title' => t('First name field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_sig_fname', 'field_first_name'),
+        '#description' => t('The user\'s field associated with the the first name'),
+    );
+    $form['lib4ri_notif_mail_sig_lname'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Family name field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_sig_lname', 'field_family_name'),
+        '#description' => t('The user\'s field associated with the the family name'),
+    );
+    
     
     return system_settings_form($form);
 }

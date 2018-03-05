@@ -158,7 +158,7 @@ function get_tokens_data(AbstractObject $object){
     
     $data = array('title' => $object->label,
                   'titleshort' => $short,
-                  'signature' => field_get_items('user',user_load($user->uid),'field_first_name')[0]['value'].' '.field_get_items('user',user_load($user->uid),'field_family_name')[0]['value'],
+                  'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
                   'objecturl' => url("$base_url/islandora/object/{$object->id}")
     );
     
