@@ -99,10 +99,10 @@ function lib4ri_notif_mail_form() {
     '#name' => 'files[]',
     '#attributes' => array('multiple' => 'multiple'),
     '#upload_location' => 'public://sen_mails/',
-    '#description' => t("Upload up to 5MB files."),
+    '#description' => t("Upload up to 20MB files."),
     '#upload_validators' => array(
       'file_validate_extensions' => array('zip tar tgz taz z gz rar gif png jpg jpeg doc xls ppt sxw sxc sxi sdw sdc sdd pdf'),
-      'file_validate_size' => array(5000000),
+      'file_validate_size' => array(20000000),
     ),
  );
   $form['submit'] = array(
