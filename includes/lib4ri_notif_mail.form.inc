@@ -89,21 +89,22 @@ function lib4ri_notif_mail_form() {
     '#required' => TRUE,
     '#rows' => 10,
     '#cols' => 60,
+    '#format' => 'plain_text',
     '#attributes' => array('class' => array('text-full')),
 #    '#default_value' => get_body_default($object),
   );
-//   $form['files'] = array(
-//     '#title' => t('Attachment'),
-//     '#type' => 'managed_file',
-//     '#name' => 'files[]',
-//     '#attributes' => array('multiple' => 'multiple'),
-//     '#upload_location' => 'public://sen_mails/',
-//     '#description' => t("Upload up to 5MB files."),
-//     '#upload_validators' => array(
-//       'file_validate_extensions' => array('zip tar tgz taz z gz rar gif png jpg jpeg doc xls ppt sxw sxc sxi sdw sdc sdd pdf'),
-//       'file_validate_size' => array(5000000),
-//     ),
-//  );
+  $form['files'] = array(
+    '#title' => t('Attachment'),
+    '#type' => 'managed_file',
+    '#name' => 'files[]',
+    '#attributes' => array('multiple' => 'multiple'),
+    '#upload_location' => 'public://sen_mails/',
+    '#description' => t("Upload up to 5MB files."),
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('zip tar tgz taz z gz rar gif png jpg jpeg doc xls ppt sxw sxc sxi sdw sdc sdd pdf'),
+      'file_validate_size' => array(5000000),
+    ),
+ );
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Send'),
