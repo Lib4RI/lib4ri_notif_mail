@@ -149,7 +149,7 @@ function get_tokens_data(AbstractObject $object){
     global $base_url;
     $len = variable_get('lib4ri_notif_mail_subj_trunc');
     if (empty($object)) {return '';}
-    $long = drupal_html_to_text($object->label);
+    $long = trim(str_replace("\n", ' ',drupal_html_to_text($object->label)));
     $short = $long;
     $point = 0;
     if (strlen($short)>$len){
