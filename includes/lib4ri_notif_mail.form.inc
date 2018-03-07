@@ -110,9 +110,9 @@ function lib4ri_notif_mail_form() {
     '#value' => t('Send'),
   );
   if (!empty($object)){
-      if (!empty($filename) && variable_get('lib4ri_notif_mail_auto_field_flag')){
-          $form['to_id']['#default_value'] = get_to_default($filename);
-          $form['cc']['#default_value'] = get_cc_default($filename);
+      if (variable_get('lib4ri_notif_mail_auto_field_flag')){
+          $form['to_id']['#default_value'] = get_to_default($object);
+          $form['cc']['#default_value'] = get_cc_default($object);
       }
       $form['subject']['#default_value'] = get_subject_default($object, $lang, $replacements_data);
       $form['body']['#default_value'] = get_body_default($object, $lang, $replacements_data);

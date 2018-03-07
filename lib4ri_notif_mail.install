@@ -53,6 +53,28 @@ function lib4ri_notif_mail_schema() {
             'id'
         )
     );
+        
+        $schema['lib4ri_notif_mail_lib4ridora_webform'] = array(
+            'description' => '-',
+            'fields' => array(
+                'object_id' => array(
+                    'type' => 'varchar',
+                    'length' => 20,
+                    'not null' => TRUE
+                ),
+                'sid' => array(
+                    'type' => 'int',
+                    'unsigned' => TRUE,
+                ),
+             ),
+            'unique keys' => array(
+                'object_id' => array('object_id')
+            ),
+            'primary key' => array(
+                'object_id'
+            )
+     );
+            
     return $schema;
 }
 

@@ -8,13 +8,10 @@
 
 function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
     $datastreams = iterator_to_array($object);
-    $filename = array_pop(array_filter($datastreams, 'lib4ridora_multi_embargo_pdf_filter'))->label;
-    $filename = explode('.', $filename)[0];
     
     $query = array('id' => $object->id,
         'destination' => current_path(),);
     
-    if (!empty($filename)) $query['file'] = $filename;
     if (variable_get('lib4ri_notif_mail_link_en_flag')){
         $query['lang'] = 'en';
         $out = l(variable_get('lib4ri_notif_mail_link_en'),LIB4RI_NOTIF_MAIL_FORM_LINK, array('query' => $query)).'<br>';

@@ -1,74 +1,23 @@
 <?php
 
-
-/**
- * Custom function to get default To address.
- */
-function get_to_default($filename){
-    $field = variable_get('lib4ri_notif_mail_to_auto_field');
+function _get_addr_default($object, $field_var){
+    //get submission id
+    $res = db_select('lib4ri_notif_mail_lib4ridora_webform', 'n')
+    ->fields('n', array('sid'))
+    ->condition('object_id', $object->id)
+    ->execute();
     
-    //get file id
-    $fid = db_query('select fid from file_managed where filename like :filename and uri like \'%webform%\' order by timestamp desc limit 1', array(':filename' => '%'.$filename.'%'))->fetchField();
+    $sub_ids = array();
+    foreach ($res as $sid) {
+        $sub_ids[] = array(
+            'sid' => t($sid->sid),
+        );
+    }
+    $sid = array_pop($sub_ids)['sid'];
     
-    $email = '';
-    if (!empty($fid)){
-        //get cid of webform mail components 
-        $res = db_select('webform_component', 'n')
-        ->fields('n', array('cid'))
-        ->condition('form_key', $field)
-        ->execute();
+    if (!empty($sid)){
+        $field = variable_get($field_var);
         
-        $email_ids = array();
-        foreach ($res as $cid) {
-            $email_ids[] = array(
-                'cid' => t($cid->cid),
-            );
-        }
-        $cid = array_pop($email_ids)['cid'];
-            
-        //get submission id
-        $res = db_select('webform_submitted_data', 'n')
-        ->fields('n', array('sid'))
-        ->condition('data', $fid)
-        ->execute();
-        
-        $sub_ids = array();
-        foreach ($res as $sid) {
-            $sub_ids[] = array(
-                'sid' => t($sid->sid),
-            );
-        }    
-        $sid = array_pop($sub_ids)['sid'];
-    
-        //get email addresses
-        $res = db_select('webform_submitted_data', 'n')
-        ->fields('n', array('data'))
-        ->condition('sid', $sid)
-        ->condition('cid', $cid)
-        ->execute();
-        
-        $emails_a = array();
-        foreach ($res as $addr) {
-            $emails_a[] = array(
-                'addr' => t($addr->data),
-            );
-        }
-        $email = array_pop($emails_a)['addr'];
-    }    
-    return $email;
-}
-
-/**
- * Custom function to get default Cc address.
- */
-function get_cc_default($filename){
-    $field = variable_get('lib4ri_notif_mail_cc_auto_field');
-    
-    //get file id
-    $fid = db_query('select fid from file_managed where filename like :filename and uri like \'%webform%\' order by timestamp desc limit 1', array(':filename' => '%'.$filename.'%'))->fetchField();
-    
-    $email = '';
-    if (!empty($fid)){    
         //get cid of webform mail components
         $res = db_select('webform_component', 'n')
         ->fields('n', array('cid'))
@@ -82,20 +31,6 @@ function get_cc_default($filename){
             );
         }
         $cid = array_pop($email_ids)['cid'];
-        
-        //get submission id
-        $res = db_select('webform_submitted_data', 'n')
-        ->fields('n', array('sid'))
-        ->condition('data', $fid)
-        ->execute();
-        
-        $sub_ids = array();
-        foreach ($res as $sid) {
-            $sub_ids[] = array(
-                'sid' => t($sid->sid),
-            );
-        }
-        $sid = array_pop($sub_ids)['sid'];
         
         //get email addresses
         $res = db_select('webform_submitted_data', 'n')
@@ -112,7 +47,23 @@ function get_cc_default($filename){
         }
         $email = array_pop($emails_a)['addr'];
     }
+    else $email = NULL;
+    
     return $email;
+}
+
+/**
+ * Custom function to get default To address.
+ */
+function get_to_default($object){
+    return _get_addr_default($object, 'lib4ri_notif_mail_to_auto_field');
+}
+
+/**
+ * Custom function to get default Cc address.
+ */
+function get_cc_default($object){
+    return _get_addr_default($object, 'lib4ri_notif_mail_cc_auto_field');
 }
 
 /**
