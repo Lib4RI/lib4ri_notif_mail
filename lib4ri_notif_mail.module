@@ -159,3 +159,10 @@ function lib4ri_notif_mail_ir_citationCModel_islandora_object_ingested($object) 
         db_insert('lib4ri_notif_mail_lib4ridora_webform')->fields($data)->execute();
     }
 }
+
+/**
+* Implements hook_CMODEL_PID_islandora_object_purged().
+*/
+function lib4ri_notif_mail_ir_citationCModel_islandora_object_purged($pid) {
+    db_delete('lib4ri_notif_mail_lib4ridora_webform')->condition('object_id', $pid)->execute();
+}
