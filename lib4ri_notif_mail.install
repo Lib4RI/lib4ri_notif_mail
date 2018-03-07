@@ -78,7 +78,40 @@ function lib4ri_notif_mail_schema() {
                 'object_id'
             )
      );
-            
+        
     return $schema;
 }
 
+/**
+ * Implements hook_update_N().
+ *
+ * Add the required table for handling webform integration.
+ */
+function lib4ri_notif_mail_update_7001(&$sandbox) {
+    $schema['lib4ri_notif_mail_lib4ridora_webform'] = array(
+        'description' => '-',
+        'fields' => array(
+            'object_id' => array(
+                'type' => 'varchar',
+                'length' => 20,
+                'not null' => TRUE
+            ),
+            'sid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+            ),
+            'nid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+            ),
+        ),
+        'unique keys' => array(
+            'object_id' => array('object_id')
+        ),
+        'primary key' => array(
+            'object_id'
+        )
+    );
+    
+    db_create_table('lib4ri_notif_mail_lib4ridora_webform', $schema['lib4ri_notif_mail_lib4ridora_webform']);
+}
