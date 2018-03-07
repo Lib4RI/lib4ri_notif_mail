@@ -153,6 +153,7 @@ function lib4ri_notif_mail_ir_citationCModel_islandora_object_ingested($object) 
         $data = array(
             'object_id' => $object->id,
             'sid' => $_GET['sid'],
+            'nid' => $_GET['nid'],
         );
         #      drupal_write_record('lib4ri_notif_mail_lib4ridora_webform', $data);
         db_insert('lib4ri_notif_mail_lib4ridora_webform')->fields($data)->execute();

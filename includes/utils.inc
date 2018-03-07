@@ -3,24 +3,25 @@
 function get_submission_id($object){
     //get submission id
     $res = db_select('lib4ri_notif_mail_lib4ridora_webform', 'n')
-    ->fields('n', array('sid'))
+    ->fields('n', array('sid', 'nid'))
     ->condition('object_id', $object->id)
     ->execute();
     
     $sub_ids = array();
-    foreach ($res as $sid) {
+    foreach ($res as $ids) {
         $sub_ids[] = array(
-            'sid' => t($sid->sid),
+            'sid' => t($ids->sid),
+            'nid' => t($ids->nid),
         );
     }
-    return(array_pop($sub_ids)['sid']);
+    return(array_pop($sub_ids));
 }
 
 function _get_addr_default($object, $field_var){
 
-    $sid = get_submission_id($object);
+    $sids = get_submission_id($object);
     
-    if (!empty($sid)){
+    if (!empty($sids)){
         $field = variable_get($field_var);
         
         //get cid of webform mail components
@@ -40,7 +41,8 @@ function _get_addr_default($object, $field_var){
         //get email addresses
         $res = db_select('webform_submitted_data', 'n')
         ->fields('n', array('data'))
-        ->condition('sid', $sid)
+        ->condition('sid', $sids['sid'])
+        ->condition('nid', $sids['nid'])
         ->condition('cid', $cid)
         ->execute();
         
