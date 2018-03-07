@@ -356,6 +356,33 @@ Viele Grüsse
         '#description' => t('The user\'s field associated with the the family name'),
     );
     
+    $form['lib4ri_notif_mail_webform_flag'] = array(
+        '#type' => 'checkbox',
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_flag', TRUE),
+        '#title' => t('Display link to user\'s submission'),
+    );
+    $form['lib4ri_notif_mail_webform_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Submission form\'s URL'),
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_url', ''),
+        '#description' => t('The linked submission form URL'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_webform_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    $form['lib4ri_notif_mail_webform_text'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text to be displayed on the link'),
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_text', 'View user\'s submission'),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_webform_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
     
     return system_settings_form($form);
 }

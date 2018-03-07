@@ -61,5 +61,13 @@ function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
         }
     }
     
+    if(variable_get('lib4ri_notif_mail_webform_flag')){
+        module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+        $sid = get_submission_id($object);
+        if (!empty($sid)){
+        $out .= '<br>'.l(variable_get('lib4ri_notif_mail_webform_text'), variable_get('lib4ri_notif_mail_webform_url').'/'.$sid).'<br>';
+        }
+    }
+    
     return $out;
 }

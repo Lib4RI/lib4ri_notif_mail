@@ -1,6 +1,6 @@
 <?php
 
-function _get_addr_default($object, $field_var){
+function get_submission_id($object){
     //get submission id
     $res = db_select('lib4ri_notif_mail_lib4ridora_webform', 'n')
     ->fields('n', array('sid'))
@@ -13,7 +13,12 @@ function _get_addr_default($object, $field_var){
             'sid' => t($sid->sid),
         );
     }
-    $sid = array_pop($sub_ids)['sid'];
+    return(array_pop($sub_ids)['sid']);
+}
+
+function _get_addr_default($object, $field_var){
+
+    $sid = get_submission_id($object);
     
     if (!empty($sid)){
         $field = variable_get($field_var);
