@@ -149,10 +149,16 @@ function lib4ri_notif_mail_tokens($type, $tokens, array $data = array(), array $
  * Implements hook_CMODEL_PID_islandora_object_ingested().
  */
 function lib4ri_notif_mail_ir_citationCModel_islandora_object_ingested($object) {
-    if (!empty($_GET['sid'])){
+    if (!empty($_GET['nid'])){
+        // Workaround to deal with a bad URL from the submission form email. To be fixed in the email
+        if (!empty($_GET['sid']))
+            $sid = $_GET['sid'];
+        else 
+            $sid = $_GET['amp;sid'];
+        /*************************************************/
         $data = array(
             'object_id' => $object->id,
-            'sid' => $_GET['sid'],
+            'sid' => $sid,
             'nid' => $_GET['nid'],
         );
         #      drupal_write_record('lib4ri_notif_mail_lib4ridora_webform', $data);
