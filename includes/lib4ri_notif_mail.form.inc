@@ -373,5 +373,15 @@ Viele Grüsse
         ),
     );
     
+    $form['lib4ri_notif_mail_webform_htme2txt'] = array(
+        '#type' => 'radios',
+        '#title' => t('Title\'s HTML tags processing'),
+        '#options' => array(
+            'remove' => t('Remove'),
+            'replace' => t('Replace with plain text emphasis tags')
+        ),
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_htme2txt', 'remove'),
+    );
+    
     return system_settings_form($form);
 }
