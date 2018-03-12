@@ -95,7 +95,7 @@ function lib4ri_notif_mail_form() {
   );
   $form['files'] = array(
     '#title' => t('Attachment'),
-    '#type' => 'managed_file',
+    '#type' => 'file',
     '#name' => 'files[]',
     '#attributes' => array('multiple' => 'multiple'),
     '#upload_location' => 'public://sen_mails/',
