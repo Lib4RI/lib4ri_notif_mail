@@ -1,3 +1,4 @@
 name = Lib4RI notification email
 description = Send email notification to authors
 core = 7.x
+stylesheets[all][] = lib4ri_notif_mail.css
