@@ -172,3 +172,30 @@ function lib4ri_notif_mail_ir_citationCModel_islandora_object_ingested($object) 
 function lib4ri_notif_mail_ir_citationCModel_islandora_object_purged($pid) {
     db_delete('lib4ri_notif_mail_lib4ridora_webform')->condition('object_id', $pid)->execute();
 }
+
+/**
+ * Implements hook_webform_webform_submission_actions().
+ */
+function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
+    $actions = array();
+       
+    if (webform_results_access($node)) {
+        global $base_url;
+        $subsite = '';
+        $biblio = variable_get('lib4ri_notif_mail_webform_bibliography');
+        foreach ($node->webform['components'] as $key => $value){
+            if ($value['form_key'] == $biblio)
+                $subsite = strtolower($submission->data[$key][0]);
+        }
+        $url = $base_url.'/islandora/object/'.$subsite.'%253Apublications/manage/overview/ingest';
+        
+        $actions['ingest'] = array(
+            'title' => t('Ingest the publication'),
+            'href' => url($url,array('query' => array('nid' => $node->nid, 'sid' => $submission->sid))),
+#            $node->nid . '/submission/' . $submission->sid . '/resend',
+#            'query' => drupal_get_destination(),
+        );
+    }
+    
+    return $actions;
+}

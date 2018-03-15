@@ -382,6 +382,14 @@ Viele Grüsse
         ),
         '#default_value' => variable_get('lib4ri_notif_mail_webform_htme2txt', 'remove'),
     );
+
+    $form['lib4ri_notif_mail_webform_bibliography'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Bibliography webform field'),
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_bibliography', 'bibliography'),
+        '#description' => t('The id of the bibliography webform field'),
+        '#required' => TRUE,
+    );
     
     return system_settings_form($form);
 }
