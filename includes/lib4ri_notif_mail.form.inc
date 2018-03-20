@@ -391,5 +391,13 @@ Viele Grüsse
         '#required' => TRUE,
     );
     
+    $form['lib4ri_notif_mail_webform_pub_link_text'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for the link to the Publication'),
+        '#default_value' => variable_get('lib4ri_notif_mail_webform_pub_link_text', 'Pub: '),
+        '#description' => t('The id of the bibliography webform field'),
+        '#required' => TRUE,
+    );
+    
     return system_settings_form($form);
 }

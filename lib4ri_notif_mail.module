@@ -195,6 +195,17 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
 #            $node->nid . '/submission/' . $submission->sid . '/resend',
 #            'query' => drupal_get_destination(),
         );
+        module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+        $obj_ids = get_object_id($node, $submission);
+        
+        foreach ($obj_ids as $key => $id){
+            $url = 'islandora/object/'.$id[obj_id];
+            $actions[$id[obj_id]] = array(
+                'title' => t(variable_get('lib4ri_notif_mail_webform_pub_link_text').$id[obj_id]),
+                'href' => url($url),
+            );
+        }
+
     }
     
     return $actions;

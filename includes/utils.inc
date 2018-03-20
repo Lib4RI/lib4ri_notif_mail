@@ -17,6 +17,24 @@ function get_submission_id($object){
     return(array_pop($sub_ids));
 }
 
+function get_object_id($node, $submission){
+    //get submission id
+    $res = db_select('lib4ri_notif_mail_lib4ridora_webform', 'n')
+    ->fields('n', array('object_id'))
+    ->condition('nid', $node->nid)
+    ->condition('sid', $submission->sid)
+    ->execute();
+    
+    $sub_ids = array();
+    foreach ($res as $ids) {
+        $sub_ids[] = array(
+            'obj_id' => t($ids->object_id),
+        );
+    }
+    return($sub_ids);
+}
+
+
 function _get_addr_default($object, $field_var){
 
     $sids = get_submission_id($object);
