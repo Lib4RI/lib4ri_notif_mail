@@ -196,7 +196,7 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
 #            'query' => drupal_get_destination(),
         );
         module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
-        $obj_ids = get_object_id($node, $submission);
+        $obj_ids = get_object_id($node->nid, $submission->sid);
         
         foreach ($obj_ids as $key => $id){
             $url = 'islandora/object/'.$id[obj_id];
@@ -209,4 +209,26 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
     }
     
     return $actions;
+}
+
+
+/**
+ * Implements hook_views_data().
+ */
+function lib4ri_notif_mail_views_data() {
+    $data['custom']['table']['group'] = t('Lib4RI notification email');
+    $data['custom']['table']['join'] = array(
+        // #global is a special flag which let's a table appear all the time.
+        '#global' => array(),
+    );
+    
+    $data['custom']['custom_handler'] = array(
+        'title' => t('DORA Publication'),
+        'help' => t('DORA Publication.'),
+        'field' => array(
+            'handler' => 'lib4ri_notif_mail_handler_field_custom_handler',
+        ),
+    );
+    
+    return $data;
 }

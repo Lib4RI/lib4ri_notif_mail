@@ -17,12 +17,12 @@ function get_submission_id($object){
     return(array_pop($sub_ids));
 }
 
-function get_object_id($node, $submission){
+function get_object_id($nid, $sid){
     //get submission id
     $res = db_select('lib4ri_notif_mail_lib4ridora_webform', 'n')
     ->fields('n', array('object_id'))
-    ->condition('nid', $node->nid)
-    ->condition('sid', $submission->sid)
+    ->condition('nid', $nid)
+    ->condition('sid', $sid)
     ->execute();
     
     $sub_ids = array();
@@ -148,4 +148,24 @@ function get_tokens_data(AbstractObject $object){
     );
     
     return $data;
+}
+
+function is_notified($id){
+    $query = db_select('lib4ri_notif_mail_sent', 'n')
+    ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))
+    ->condition('pubid', $id)
+    ->orderBy('tstmp', 'DESC') //Most recent first.
+    ->execute();
+    
+    foreach ($query as $send) {
+        $items[] = array(
+            'tstmp' => t($send->tstmp),
+            'to' => t($send->mailto),
+            'cc' => t($send->cc),
+            'bcc' => t($send->bcc),
+            'subject' => t($send->subject),
+        );
+    }
+    
+    return !empty($items);
 }
