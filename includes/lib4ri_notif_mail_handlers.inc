@@ -39,7 +39,7 @@
          }
          
          if (is_notified($obj_ids[0]['obj_id']))
-             $ret .= '  -   User Notified';
+             $ret .= '  -   User notified';
          $ret .= '</font>';
      }
           
