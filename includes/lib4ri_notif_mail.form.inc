@@ -203,6 +203,8 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
 }
 
 function lib4ri_notif_mail_admin_form() {
+    global $base_url;
+    
     $form['lib4ri_notif_mail_link_en_flag'] = array(
         '#type' => 'checkbox',
         '#default_value' => variable_get('lib4ri_notif_mail_link_en_flag', TRUE),
@@ -341,6 +343,14 @@ Viele Grüsse
                 ':input[name="lib4ri_notif_mail_link_de_flag"]' => array('checked' => TRUE),
             ),
         ),
+    );
+    
+    $form['lib4ri_notif_mail_sub_reminder'] = array(
+        '#type' => 'textarea',
+        '#size' => 100,
+        '#title' => t('Submission form reminder'),
+        '#default_value' => variable_get('lib4ri_notif_mail_sub_reminder', 'For further submissions, please use our new submission form '.$base_url.'/submit'),
+        '#description' => t('The text to display to remind users to use the submission form'),
     );
     
     $form['lib4ri_notif_mail_sig_fname'] = array(

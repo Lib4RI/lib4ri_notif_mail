@@ -126,6 +126,11 @@ function lib4ri_notif_mail_token_info() {
         'name' => t('Trunkated title'),
         'description' => t('The trunkated publication title '),
     );
+    $info['tokens']['lib4ri_notif_mail']['submission_reminder'] = array(
+        'name' => t('Trunkated title'),
+        'description' => t(' '),
+    );
+    
     return $info;
 }
 
