@@ -192,7 +192,7 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
             if ($value['form_key'] == $biblio)
                 $subsite = strtolower($submission->data[$key][0]);
         }
-        $url = $base_url.'/islandora/object/'.$subsite.'%253Apublications/manage/overview/ingest';
+        $url = $base_url.'/islandora/object/'.$subsite.'%3Apublications/manage/overview/ingest';
         
         $actions['ingest'] = array(
             'title' => t('Ingest the publication'),
