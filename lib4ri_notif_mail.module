@@ -207,7 +207,7 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
             $url = 'islandora/object/'.$id[obj_id];
             $actions[$id[obj_id]] = array(
                 'title' => t(variable_get('lib4ri_notif_mail_webform_pub_link_text').$id[obj_id]),
-                'href' => url($url),
+                'href' => $url,
             );
         }
 
