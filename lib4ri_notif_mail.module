@@ -33,6 +33,7 @@ function lib4ri_notif_mail_block_info(){
  * Implements hook_block_view().
  */
 function lib4ri_notif_mail_block_view($delta = ''){
+    $block = [];
     switch ($delta) {
         case 'lib4ri_notif_mail':
             module_load_include('inc', 'lib4ri_notif_mail', 'includes/block');

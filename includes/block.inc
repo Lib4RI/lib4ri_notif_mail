@@ -22,7 +22,7 @@ function lib4ri_notif_mail_get_block_links(AbstractObject $object) {
     }
                 
     $query = db_select('lib4ri_notif_mail_sent', 'n')
-    ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))
+    ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', 'subject'))
     ->condition('pubid', $object->id) 
     ->orderBy('tstmp', 'DESC') //Most recent first.
     ->execute();
