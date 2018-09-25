@@ -16,7 +16,12 @@ function lib4ri_notif_mail_form() {
   $lang = $_GET['lang'];
   if (!empty($pid)){
       $object = islandora_object_load($pid);
-      $filename = $_GET['file'];
+      if (isset($_GET['file'])){
+        $filename = $_GET['file'];
+      }
+      else {
+          $filename = NULL;
+      }
       $replacements_data = get_tokens_data($object);
   }
   else{
