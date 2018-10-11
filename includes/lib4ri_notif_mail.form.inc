@@ -157,7 +157,7 @@ function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
   // From Address from user login.
   if ($user->uid) {
 //      $from = '<dora@lib4ri.ch> in behalf of '.$user->name.' ('.$user->mail.')';
-      $name = field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'];
+      $name = mb_encode_mimeheader(field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value']);
       $from = "\"{$name}\" <{$user->mail}>";
       $sender = '"DORA Lib4RI" <dora@lib4ri.ch>';
       $ret_path = 'dora@lib4ri.ch';
