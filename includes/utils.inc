@@ -34,6 +34,13 @@ function get_object_id($nid, $sid){
     return($sub_ids);
 }
 
+function _get_addr_default_datastream($object, $field_var){
+     if (module_exists('lib4ri_staged_ingest')) {
+         module_load_include('module', 'lib4ri_staged_ingest', 'lib4ri_staged_ingest');
+         return lib4ri_staged_ingest_get_submitter_email($object, $name, $value, $langcode);
+     }
+    
+}
 
 function _get_addr_default($object, $field_var){
 
@@ -81,7 +88,11 @@ function _get_addr_default($object, $field_var){
  * Custom function to get default To address.
  */
 function get_to_default($object){
-    return _get_addr_default($object, 'lib4ri_notif_mail_to_auto_field');
+    $a = _get_addr_default($object, 'lib4ri_notif_mail_to_auto_field');
+    if (!empty($a))
+        return $a;
+    else
+        return _get_addr_default_datastream($object);
 }
 
 /**
