@@ -144,7 +144,7 @@ function get_tokens_data(AbstractObject $object){
     $len = variable_get('lib4ri_notif_mail_subj_trunc');
     if (empty($object)) {return '';}
     if (variable_get('lib4ri_notif_mail_webform_htme2txt') == 'remove')
-        $long = trim(strip_tags($object->label));
+        $long = trim(strip_tags(html_entity_decode($object->label)));
     else
         $long = trim(str_replace("\n", ' ',drupal_html_to_text($object->label)));
     
