@@ -8,7 +8,44 @@
 /**
  * Implements hook_form().
  */
-function lib4ri_notif_mail_form() {
+function lib4ri_notif_mail_form(&$form=null, &$form_state=null) {
+    if (!isset($form_state['stage'])) $form_state['stage'] = 'choose_content';
+    
+    $form = array();
+    
+    switch ($form_state['stage']) {
+        
+        case 'choose_content':
+            return lib4ri_notif_mail_choose_content_form($form, $form_state);
+            break;
+            
+        case 'send':
+            return lib4ri_notif_mail_send_form($form, $form_state);
+            break;
+                        
+        default:
+            return lib4ri_notif_mail_choose_content_form($form, $form_state);
+            break;
+    }
+    
+    return $form;
+}
+
+function lib4ri_notif_mail_choose_content_form(&$form, &$form_state) {
+    $form['placeholder1'] = array(
+        '#type' => 'textfield',
+        #    '#autocomplete_path' => 'send-mails/mailids',
+        '#size' => 60,
+        '#maxlength' => 1000,
+        '#title' => t('place holder'),
+        '#required' => TRUE,
+        '#description' => t(""),
+        #    '#default_value' => get_to_default(),
+    );
+    
+}
+
+function lib4ri_notif_mail_send_form(&$form, &$form_state) {
     
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
@@ -128,7 +165,16 @@ function lib4ri_notif_mail_form() {
 /**
  * Implements hook_form_validate().
  */
+
 function lib4ri_notif_mail_form_validate(&$form, &$form_state) {
+    
+}
+
+function lib4ri_notif_mail_hoose_content_validate(&$form, &$form_state) {
+    
+}
+
+function lib4ri_notif_mail_send_validate(&$form, &$form_state) {
   // Role based To address.
   if ($form_state['values']['role_based']) {
     $mailid_array = array();
@@ -147,6 +193,7 @@ function lib4ri_notif_mail_form_validate(&$form, &$form_state) {
     }
   }
 }
+
 
 /**
  * Implements hook_form_submit().
