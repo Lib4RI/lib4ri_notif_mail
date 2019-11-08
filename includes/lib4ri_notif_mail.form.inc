@@ -8,44 +8,47 @@
 /**
  * Implements hook_form().
  */
-function lib4ri_notif_mail_form(&$form=null, &$form_state=null) {
-    if (!isset($form_state['stage'])) $form_state['stage'] = 'choose_content';
-    
-    $form = array();
-    
-    switch ($form_state['stage']) {
-        
-        case 'choose_content':
-            return lib4ri_notif_mail_choose_content_form($form, $form_state);
-            break;
-            
-        case 'send':
-            return lib4ri_notif_mail_send_form($form, $form_state);
-            break;
-                        
-        default:
-            return lib4ri_notif_mail_choose_content_form($form, $form_state);
-            break;
+function lib4ri_notif_mail_form($form, &$form_state) {
+    if (isset($form_state['storage']['send'])) {
+        return lib4ri_notif_mail_send_form($form, $form_state);
     }
+
+    return lib4ri_notif_mail_choose_content_form($form, $form_state);
+}
+
+function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
+    
+    $form['lib4ri_notif_mail_choose_ingest'] = array(
+        '#type' => 'radios',
+        '#title' => t('Publication source'),
+        '#options' => array(
+            'int' => t('Alert ingested publication'),
+            'ext' => t('Author submitted publication')
+        ),
+        '#default_value' => variable_get('lib4ri_notif_mail_choose_ingest', 'int'),
+    );
+
+    $form['lib4ri_notif_mail_choose_oa'] = array(
+        '#type' => 'radios',
+        '#title' => t('Open acces'),
+        '#options' => array(
+            'oa' => t('Open access'),
+            'goa' => t(''),
+            'ca' => t('NOT open access')
+        ),
+        '#default_value' => variable_get('lib4ri_notif_mail_choose_oa', 'oa'),
+    );
+    
+    $form['next'] = array(
+        '#type' => 'submit',
+        '#value' => t('Next'),
+        '#id' => 'edit-send',
+    );
     
     return $form;
 }
 
-function lib4ri_notif_mail_choose_content_form(&$form, &$form_state) {
-    $form['placeholder1'] = array(
-        '#type' => 'textfield',
-        #    '#autocomplete_path' => 'send-mails/mailids',
-        '#size' => 60,
-        '#maxlength' => 1000,
-        '#title' => t('place holder'),
-        '#required' => TRUE,
-        '#description' => t(""),
-        #    '#default_value' => get_to_default(),
-    );
-    
-}
-
-function lib4ri_notif_mail_send_form(&$form, &$form_state) {
+function lib4ri_notif_mail_send_form($form, &$form_state) {
     
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
@@ -166,15 +169,15 @@ function lib4ri_notif_mail_send_form(&$form, &$form_state) {
  * Implements hook_form_validate().
  */
 
-function lib4ri_notif_mail_form_validate(&$form, &$form_state) {
+// function lib4ri_notif_mail_form_validate($form, &$form_state) {
+    
+// }
+
+function lib4ri_notif_mail_choose_content_validate($form, &$form_state) {
     
 }
 
-function lib4ri_notif_mail_hoose_content_validate(&$form, &$form_state) {
-    
-}
-
-function lib4ri_notif_mail_send_validate(&$form, &$form_state) {
+function lib4ri_notif_mail_send_validate($form, &$form_state) {
   // Role based To address.
   if ($form_state['values']['role_based']) {
     $mailid_array = array();
@@ -198,62 +201,97 @@ function lib4ri_notif_mail_send_validate(&$form, &$form_state) {
 /**
  * Implements hook_form_submit().
  */
-function lib4ri_notif_mail_form_submit(&$form, &$form_state) {
-  global $user;
-  module_load_include('inc', 'lib4ri_notif_mail', 'includes/lib4ri_notif_mail.query');
-  // From Address from user login.
-  if ($user->uid) {
-//      $from = '<dora@lib4ri.ch> in behalf of '.$user->name.' ('.$user->mail.')';
-      $name = mb_encode_mimeheader(field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value']);
-      $from = "\"{$name}\" <{$user->mail}>";
-      $sender = '"DORA Lib4RI" <dora@lib4ri.ch>';
-      $ret_path = 'dora@lib4ri.ch';
-      $reply_to = 'dora@lib4ri.ch';
-  }
-  else {
-    $from = variable_get('site_mail', '');
-    $sender = $from;
-    $ret_path = $from;
-  }
-
-  $module = 'lib4ri_notif_mail';
-  $language = language_default();
-  $file = file_load($form_state['values']['files']);
-  $report = $form_state['values']['body']['value'];
-  $send = FALSE;
-  $key = 'lib4ri_notif_mail_send';
-  $email = $form_state['values']['to_id'];
-//   $params = array(
-//       'headers' => array(
-//           'Cc' => $form_state['values']['cc'],
-//           'Bcc' => $form_state['values']['bcc'],
-//       )
-//   );
-  $message = drupal_mail($module, $key, $email, $language, $params, $from, $send);
-  $message['from'] = $from;
-  $message['subject'] = $form_state['values']['subject'];
-  $message['body'] = array($report);
-  $message['params']['attachments'][] = array(
-    'filepath' => $file->uri,
-    'filename' => $file->filename,
-    'filemime' => $file->filemime,
-    'list' => TRUE,
-  );
-  $message['headers']=array(
-      'Cc' => $form_state['values']['cc'],
-      'Bcc' => $form_state['values']['bcc'],
-      'From' => $message['from'],
-      'Sender' => $sender,
-      'Return-Path' => $ret_path,
-      'Reply-To' => $reply_to,
-  );
-  $system = drupal_mail_system($module, $key);
-  $message = $system->format($message);
-  $message['result'] = $system->mail($message);
-  save_mail_data($form_state['values']['object_id'], $email, $message);
-  drupal_set_message(t('Your e-mail was sent successfully!'));
+function lib4ri_notif_mail_form_submit($form, &$form_state) {
+    
+    switch ($form_state['triggering_element']['#id']){
+        case 'edit-send':
+            $form_state['storage']['send'] = TRUE;
+            $form_state['rebuild'] = TRUE;
+        break;
+    
+        
+        case 'send':
+              global $user;
+              module_load_include('inc', 'lib4ri_notif_mail', 'includes/lib4ri_notif_mail.query');
+              // From Address from user login.
+              if ($user->uid) {
+            //      $from = '<dora@lib4ri.ch> in behalf of '.$user->name.' ('.$user->mail.')';
+                  $name = mb_encode_mimeheader(field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value']);
+                  $from = "\"{$name}\" <{$user->mail}>";
+                  $sender = '"DORA Lib4RI" <dora@lib4ri.ch>';
+                  $ret_path = 'dora@lib4ri.ch';
+                  $reply_to = 'dora@lib4ri.ch';
+              }
+              else {
+                $from = variable_get('site_mail', '');
+                $sender = $from;
+                $ret_path = $from;
+              }
+            
+              $module = 'lib4ri_notif_mail';
+              $language = language_default();
+              $file = file_load($form_state['values']['files']);
+              $report = $form_state['values']['body']['value'];
+              $send = FALSE;
+              $key = 'lib4ri_notif_mail_send';
+              $email = $form_state['values']['to_id'];
+            //   $params = array(
+            //       'headers' => array(
+            //           'Cc' => $form_state['values']['cc'],
+            //           'Bcc' => $form_state['values']['bcc'],
+            //       )
+            //   );
+              $message = drupal_mail($module, $key, $email, $language, $params, $from, $send);
+              $message['from'] = $from;
+              $message['subject'] = $form_state['values']['subject'];
+              $message['body'] = array($report);
+              $message['params']['attachments'][] = array(
+                'filepath' => $file->uri,
+                'filename' => $file->filename,
+                'filemime' => $file->filemime,
+                'list' => TRUE,
+              );
+              $message['headers']=array(
+                  'Cc' => $form_state['values']['cc'],
+                  'Bcc' => $form_state['values']['bcc'],
+                  'From' => $message['from'],
+                  'Sender' => $sender,
+                  'Return-Path' => $ret_path,
+                  'Reply-To' => $reply_to,
+              );
+              $system = drupal_mail_system($module, $key);
+              $message = $system->format($message);
+              $message['result'] = $system->mail($message);
+              save_mail_data($form_state['values']['object_id'], $email, $message);
+              drupal_set_message(t('Your e-mail was sent successfully!'));
+              break;
+    }
+    $form_state['rebuild'] = TRUE;
 }
 
+
+function lib4ri_notif_mail_get_step($form, &$form_state) {
+    
+    $form_state['storage']['stage'] = isset($form_state['storage']['stage']) ? $form_state['storage']['stage'] : 1;
+    
+    $form_stages = array(
+        'choose_content' => 1,
+        'send' => 2,
+    );
+    
+    if (isset($form_stages[$form_state['storage']['stage']])) {
+        $current_step = $form_stages[$form_state['storage']['stage']];
+    }
+    else {
+        $current_step = 1;
+    }
+        
+    return $form;
+    
+}
+
+
+/***************************************************************************************/
 function lib4ri_notif_mail_admin_form() {
     global $base_url;
     
