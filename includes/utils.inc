@@ -138,7 +138,7 @@ function get_body_default(AbstractObject $object, $lang, $replacement_data){
     return $rows;
 }
 
-function get_tokens_data(AbstractObject $object){
+function get_tokens_data(AbstractObject $object, &$form_state){
     global $user;
     global $base_url;
     $len = variable_get('lib4ri_notif_mail_subj_trunc');
@@ -170,6 +170,8 @@ function get_tokens_data(AbstractObject $object){
                   'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
                   'objecturl' => url("$base_url/islandora/object/{$object->id}"),
                   'submission_reminder' => $reminder,
+                  'openaccestext' => get_open_access_text($form_state),
+                  'workflowtext' => get_workflow_text($form_state),
     );
     
     return $data;
@@ -194,3 +196,22 @@ function is_notified($id){
     
     return !empty($items);
 }
+
+
+function get_open_access_text(&$form_state){
+    switch ($form_state['values']['lib4ri_notif_mail_choose_oa']){
+        case 'oa':
+            return variable_get('lib4ri_notif_mail_open_text');
+            break;
+            
+        case 'goa':
+            return variable_get('lib4ri_notif_mail_open2_text');
+            break;
+            
+        case 'ca':
+            return variable_get('lib4ri_notif_mail_closed_text');
+            break;
+    }
+}
+
+

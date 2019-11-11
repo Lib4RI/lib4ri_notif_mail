@@ -62,7 +62,7 @@ function lib4ri_notif_mail_send_form($form, &$form_state) {
       else {
           $filename = NULL;
       }
-      $replacements_data = get_tokens_data($object);
+      $replacements_data = get_tokens_data($object, $form_state);
   }
   else{
       $object=NULL;
@@ -402,6 +402,67 @@ Kind regards,
             ),
         ),
     );
+    
+    $form['lib4ri_notif_mail_alert_ingested_text'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Publication source - Alert ingested (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_alert_ingested_text', t()),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    
+    $form['lib4ri_notif_mail_submitted_text'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Publication source - Author submitted (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_submitted_text', t()),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    
+    $form['lib4ri_notif_mail_open_text'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Open Access (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_open_text', t()),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+
+    $form['lib4ri_notif_mail_open2_text'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Open Access (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_open2_text', t()),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    
+    $form['lib4ri_notif_mail_closed_text'] = array(
+        '#type' => 'textarea',
+        '#title' => t('NO Open Access (EN)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_closed_text', t()),
+        '#description' => t(''),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_link_en_flag"]' => array('checked' => TRUE),
+            ),
+        ),
+    );
+    
     $form['lib4ri_notif_mail_subject_de'] = array(
         '#type' => 'textfield',
         '#title' => t('Email subject (DE)'),
@@ -413,6 +474,7 @@ Kind regards,
             ),
         ),
     );
+
     
     $form['lib4ri_notif_mail_body_de'] = array(
         '#type' => 'textarea',
