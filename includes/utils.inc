@@ -170,7 +170,7 @@ function get_tokens_data(AbstractObject $object, &$form_state){
                   'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
                   'objecturl' => url("$base_url/islandora/object/{$object->id}"),
                   'submission_reminder' => $reminder,
-                  'openaccestext' => get_open_access_text($form_state),
+                  'openaccesstext' => get_open_access_text($form_state),
                   'workflowtext' => get_workflow_text($form_state),
     );
     
@@ -212,6 +212,21 @@ function get_open_access_text(&$form_state){
             return variable_get('lib4ri_notif_mail_closed_text');
             break;
     }
+    
+    return '';
 }
 
+function get_workflow_text(&$form_state){
+    switch ($form_state['values']['lib4ri_notif_mail_choose_ingest']){
+        case 'int':
+            return variable_get('lib4ri_notif_mail_alert_ingested_text');
+            break;
+            
+        case 'ext':
+            return variable_get('lib4ri_notif_mail_submitted_text');
+            break;
+        }
+    
+    return '';
+}
 

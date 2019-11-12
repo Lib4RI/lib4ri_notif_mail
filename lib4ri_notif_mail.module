@@ -131,6 +131,14 @@ function lib4ri_notif_mail_token_info() {
         'name' => t('Trunkated title'),
         'description' => t(' '),
     );
+    $info['tokens']['lib4ri_notif_mail']['openaccesstext'] = array(
+        'name' => t(''),
+        'description' => t(' '),
+    );
+    $info['tokens']['lib4ri_notif_mail']['workflowtext'] = array(
+        'name' => t(''),
+        'description' => t(' '),
+    );
     
     return $info;
 }
