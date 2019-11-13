@@ -429,7 +429,7 @@ Kind regards,
     
     $form['lib4ri_notif_mail_open_text'] = array(
         '#type' => 'textarea',
-        '#title' => t('Open Access (EN)'),
+        '#title' => t('Gold Open Access (EN)'),
         '#default_value' => variable_get('lib4ri_notif_mail_open_text', t()),
         '#description' => t(''),
         '#states' => array(
@@ -441,7 +441,7 @@ Kind regards,
 
     $form['lib4ri_notif_mail_open2_text'] = array(
         '#type' => 'textarea',
-        '#title' => t('Open Access (EN)'),
+        '#title' => t('Green Open Access (EN)'),
         '#default_value' => variable_get('lib4ri_notif_mail_open2_text', t()),
         '#description' => t(''),
         '#states' => array(
