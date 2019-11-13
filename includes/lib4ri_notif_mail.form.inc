@@ -235,7 +235,7 @@ function lib4ri_notif_mail_form_submit($form, &$form_state) {
               $report = $form_state['values']['body']['value'];
               $send = FALSE;
               $key = 'lib4ri_notif_mail_send';
-              $email = $form_state['values']['to_id'];
+              $email = str_replace(';',',',$form_state['values']['to_id']);
             //   $params = array(
             //       'headers' => array(
             //           'Cc' => $form_state['values']['cc'],
@@ -253,8 +253,8 @@ function lib4ri_notif_mail_form_submit($form, &$form_state) {
                 'list' => TRUE,
               );
               $message['headers']=array(
-                  'Cc' => $form_state['values']['cc'],
-                  'Bcc' => $form_state['values']['bcc'],
+                  'Cc' => str_replace(';',',',$form_state['values']['cc']),
+                  'Bcc' => str_replace(';',',',$form_state['values']['bcc']),
                   'From' => $message['from'],
                   'Sender' => $sender,
                   'Return-Path' => $ret_path,
