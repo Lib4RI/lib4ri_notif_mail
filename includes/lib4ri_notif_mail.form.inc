@@ -153,6 +153,7 @@ function lib4ri_notif_mail_send_form($form, &$form_state) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Send'),
+    '#id' => 'send',
   );
   if (!empty($object)){
       if (variable_get('lib4ri_notif_mail_auto_field_flag')){
@@ -266,7 +267,6 @@ function lib4ri_notif_mail_form_submit($form, &$form_state) {
               drupal_set_message(t('Your e-mail was sent successfully!'));
               break;
     }
-    $form_state['rebuild'] = TRUE;
 }
 
 
