@@ -32,8 +32,8 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
         '#type' => 'radios',
         '#title' => t('Open acces'),
         '#options' => array(
-            'oa' => t('Open access'),
-            'goa' => t(''),
+            'oa' => t('Gold Open access'),
+            'goa' => t('Green Open access'),
             'ca' => t('NOT open access')
         ),
         '#default_value' => variable_get('lib4ri_notif_mail_choose_oa', 'oa'),
