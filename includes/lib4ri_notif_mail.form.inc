@@ -22,8 +22,8 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
         '#type' => 'radios',
         '#title' => t('Publication source'),
         '#options' => array(
-            'int' => t('Alert ingested publication'),
-            'ext' => t('Author submitted publication')
+            'int' => variable_get('lib4ri_notif_mail_alert_ing_txt'),
+            'ext' => variable_get('lib4ri_notif_mail_auth_sub_txt')
         ),
         '#default_value' => variable_get('lib4ri_notif_mail_choose_ingest', 'int'),
     );
@@ -32,9 +32,9 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
         '#type' => 'radios',
         '#title' => t('Open acces'),
         '#options' => array(
-            'oa' => t('Gold Open access'),
-            'goa' => t('Green Open access'),
-            'ca' => t('NOT open access')
+            'oa' => variable_get('lib4ri_notif_mail_gold_txt'),
+            'goa' => variable_get('lib4ri_notif_mail_green_txt'),
+            'ca' => variable_get('lib4ri_notif_mail_nooa_txt')
         ),
         '#default_value' => variable_get('lib4ri_notif_mail_choose_oa', 'oa'),
     );
@@ -560,6 +560,47 @@ Viele Grüsse
         '#description' => t('The id of the bibliography webform field'),
         '#required' => TRUE,
     );
+
+    $form['lib4ri_notif_mail_alert_ing_txt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for alert ingested publications'),
+        '#default_value' => variable_get('lib4ri_notif_mail_alert_ing_txt', 'Alert ingested publication'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+
+    $form['lib4ri_notif_mail_auth_sub_txt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for author submitted publications'),
+        '#default_value' => variable_get('lib4ri_notif_mail_auth_sub_txt', 'Author submitted publication'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+
+    $form['lib4ri_notif_mail_gold_txt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for gold open access publications'),
+        '#default_value' => variable_get('lib4ri_notif_mail_gold_txt', 'Gold Open access'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+
+    $form['lib4ri_notif_mail_green_txt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for green open access publications'),
+        '#default_value' => variable_get('lib4ri_notif_mail_green_txt', 'Green Open access'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+    
+    $form['lib4ri_notif_mail_nooa_txt'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text for not open access publications'),
+        '#default_value' => variable_get('lib4ri_notif_mail_nooa_txt', 'NOT Open access'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+    
     
     return system_settings_form($form);
 }
