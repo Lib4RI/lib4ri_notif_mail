@@ -87,15 +87,48 @@ function _get_addr_default($object, $field_var){
     return $email;
 }
 
+function _get_addr_default_solr($object){
+    
+    $params['f'][0] = 'PID:'.islandora_solr_lesser_escape($object->pid);
+    
+    //$params['q'] = str_replace($base_url.'/', '', $current_url);
+    $sq = new IslandoraSolrQueryProcessor();
+    
+    // Build and execute Apache Solr query.
+    $sq->buildQuery('*:*', $params);
+    $sq->solrParams['facet'] = "false";
+    $sq->solrParams['fl'] = 'mods_name_personal_author_alternativeName_nameIdentifier_authorId_ms';
+    $sq->solrLimit = '100000';
+    $sq->executeQuery(FALSE, TRUE);
+    
+    $ii = 0;
+    foreach ($sq->islandoraSolrResult['response']['objects'] as $object) {
+//        array_push(, $object['solr_doc']);
+    }
+    
+    
+    return $email;
+}
+
 /**
  * Custom function to get default To address.
  */
 function get_to_default($object){
     $a = _get_addr_default($object, 'lib4ri_notif_mail_to_auto_field');
-    if (!empty($a))
+    if (!empty($a)){
         return $a;
-    else
-        return _get_addr_default_datastream($object, 'submitter');
+    }
+    
+    $b = _get_addr_default_datastream($object, 'submitter');
+    if (!empty($b)){
+        return $b;
+    }
+    
+    $c = _get_addr_default_solr($object);
+    if (!empty($c)){
+        return $c;
+    }
+    
 }
 
 /**
