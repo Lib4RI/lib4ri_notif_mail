@@ -89,7 +89,7 @@ function _get_addr_default($object, $field_var){
 
 function _get_addr_default_solr($object){
     
-    $params['f'][0] = 'PID:'.islandora_solr_lesser_escape($object->pid);
+    $params['f'][0] = 'PID:'.islandora_solr_lesser_escape($object->id);
     
     //$params['q'] = str_replace($base_url.'/', '', $current_url);
     $sq = new IslandoraSolrQueryProcessor();
@@ -101,13 +101,27 @@ function _get_addr_default_solr($object){
     $sq->solrLimit = '100000';
     $sq->executeQuery(FALSE, TRUE);
     
-    $ii = 0;
-    foreach ($sq->islandoraSolrResult['response']['objects'] as $object) {
-//        array_push(, $object['solr_doc']);
+    foreach ($sq->islandoraSolrResult['response']['objects'] as $obj) {
+        $authors = $obj['solr_doc']['mods_name_personal_author_alternativeName_nameIdentifier_authorId_ms'];
     }
     
+    $emails = array();
+    foreach ($authors as $author){
+//        $params['f'][0] = 'PID:'.islandora_solr_lesser_escape($author);
+        $sq = new IslandoraSolrQueryProcessor();
+        $sq->buildQuery('*:*', $params);
+        $sq->solrParams['fq'] = 'PID:'.islandora_solr_lesser_escape($author);
+        $sq->solrParams['facet'] = "false";
+        $sq->solrParams['fl'] = 'MADS_email_mt';
+        $sq->solrLimit = '10';
+        $sq->executeQuery(FALSE, TRUE);
+        
+        foreach ($sq->islandoraSolrResult['response']['objects'] as $obj) {
+            $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
+        }
+    }
     
-    return $email;
+    return implode(',', $emails);
 }
 
 /**
