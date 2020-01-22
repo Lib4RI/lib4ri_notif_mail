@@ -121,6 +121,9 @@ function _get_addr_default_solr($object){
             if (!is_null($email)){
                 $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
             }
+            else {
+                drupal_set_message('Address not found for author: '.$author, 'warning');
+            }
         }
     }
     
@@ -133,20 +136,24 @@ function _get_addr_default_solr($object){
 function get_to_default($object){
     $a = _get_addr_default($object, 'lib4ri_notif_mail_to_auto_field');
     if (!empty($a)){
+        drupal_set_message('Addresses fetched from submission form', 'status');
         return $a;
     }
     
     $b = _get_addr_default_datastream($object, 'submitter');
     if (!empty($b)){
+        drupal_set_message('Addresses fetched from staged submission', 'status');
         return $b;
     }
     
     $c = _get_addr_default_solr($object);
     if (!empty($c)){
+        drupal_set_message('Addresses fetched from authors MADS', 'status');
         return $c;
     }
     
 }
+
 
 /**
  * Custom function to get default Cc address.
