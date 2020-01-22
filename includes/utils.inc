@@ -117,7 +117,10 @@ function _get_addr_default_solr($object){
         $sq->executeQuery(FALSE, TRUE);
         
         foreach ($sq->islandoraSolrResult['response']['objects'] as $obj) {
-            $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
+            $email = $obj['solr_doc']['MADS_email_mt'];
+            if (!is_null($email)){
+                $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
+            }
         }
     }
     
