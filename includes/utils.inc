@@ -112,7 +112,7 @@ function _get_addr_default_solr($object){
         $sq->buildQuery('*:*', $params);
         $sq->solrParams['fq'] = 'PID:'.islandora_solr_lesser_escape($author);
         $sq->solrParams['facet'] = "false";
-        $sq->solrParams['fl'] = 'MADS_email_mt';
+        $sq->solrParams['fl'] = 'MADS_email_mt, MADS_fullname_mt';
         $sq->solrLimit = '10';
         $sq->executeQuery(FALSE, TRUE);
         
@@ -122,7 +122,8 @@ function _get_addr_default_solr($object){
                 $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
             }
             else {
-                drupal_set_message('Address not found for author: '.$author, 'warning');
+                $name =	$obj['solr_doc']['MADS_fullname_mt'][0];
+                drupal_set_message(t("Address not found for author: $name (<a href=\"islandora/object/$author\">$author</a>)"), 'warning');
             }
         }
     }
