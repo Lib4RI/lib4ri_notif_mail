@@ -124,7 +124,7 @@ function _get_addr_default_solr($object){
         }
     }
     
-    return implode(',', $emails);
+    return implode(';', $emails);
 }
 
 /**
