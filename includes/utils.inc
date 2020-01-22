@@ -288,3 +288,18 @@ function get_workflow_text(&$form_state){
     return '';
 }
 
+function get_choose_ingest_default(){
+    $pid = $_GET['id'];
+   
+    if (!empty($pid)){
+        $object = islandora_object_load($pid);
+        if (!empty($object)){
+            $sids = get_submission_id($object);
+            $ds = $object['AUX_INFO'];
+            if ((!empty($sids)) OR $ds){
+                return 'ext';
+            }
+        }
+    }
+    return 'int';
+}

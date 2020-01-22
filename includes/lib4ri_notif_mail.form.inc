@@ -17,6 +17,7 @@ function lib4ri_notif_mail_form($form, &$form_state) {
 }
 
 function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
+    module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
     
     $form['lib4ri_notif_mail_choose_ingest'] = array(
         '#type' => 'radios',
@@ -25,7 +26,8 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
             'int' => variable_get('lib4ri_notif_mail_alert_ing_txt'),
             'ext' => variable_get('lib4ri_notif_mail_auth_sub_txt')
         ),
-        '#default_value' => variable_get('lib4ri_notif_mail_choose_ingest', 'int'),
+//        '#default_value' => variable_get('lib4ri_notif_mail_choose_ingest', 'int'),
+        '#default_value' => get_choose_ingest_default(),
     );
 
     $form['lib4ri_notif_mail_choose_oa'] = array(
