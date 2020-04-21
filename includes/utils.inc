@@ -97,12 +97,12 @@ function _get_addr_default_solr($object){
     // Build and execute Apache Solr query.
     $sq->buildQuery('*:*', $params);
     $sq->solrParams['facet'] = "false";
-    $sq->solrParams['fl'] = 'mods_name_personal_author_alternativeName_nameIdentifier_authorId_ms';
+    $sq->solrParams['fl'] = variable_get('lib4ri_notif_mail_solr_auth_id');
     $sq->solrLimit = '100000';
     $sq->executeQuery(FALSE, TRUE);
     
     foreach ($sq->islandoraSolrResult['response']['objects'] as $obj) {
-        $authors = $obj['solr_doc']['mods_name_personal_author_alternativeName_nameIdentifier_authorId_ms'];
+        $authors = $obj['solr_doc'][variable_get('lib4ri_notif_mail_solr_auth_id')];
     }
     
     $emails = array();
@@ -112,17 +112,17 @@ function _get_addr_default_solr($object){
         $sq->buildQuery('*:*', $params);
         $sq->solrParams['fq'] = 'PID:'.islandora_solr_lesser_escape($author);
         $sq->solrParams['facet'] = "false";
-        $sq->solrParams['fl'] = 'MADS_email_mt, MADS_fullname_mt';
+        $sq->solrParams['fl'] = variable_get('lib4ri_notif_mail_solr_auth_mail').', '.variable_get('lib4ri_notif_mail_solr_auth_fullname');
         $sq->solrLimit = '10';
         $sq->executeQuery(FALSE, TRUE);
         
         foreach ($sq->islandoraSolrResult['response']['objects'] as $obj) {
-            $email = $obj['solr_doc']['MADS_email_mt'];
+            $email = $obj['solr_doc'][variable_get('lib4ri_notif_mail_solr_auth_mail')];
             if (!is_null($email)){
-                $emails = array_merge($emails, $obj['solr_doc']['MADS_email_mt']);
+                $emails = array_merge($emails, $obj['solr_doc'][variable_get('lib4ri_notif_mail_solr_auth_mail')]);
             }
             else {
-                $name =	$obj['solr_doc']['MADS_fullname_mt'][0];
+                $name =	$obj['solr_doc'][variable_get('lib4ri_notif_mail_solr_auth_fullname')][0];
                 drupal_set_message(t("Address not found for author: $name (<a href=\"islandora/object/$author\">$author</a>)"), 'warning');
             }
         }

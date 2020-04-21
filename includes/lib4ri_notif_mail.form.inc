@@ -603,6 +603,29 @@ Viele Grüsse
         '#required' => TRUE,
     );
     
+    $form['lib4ri_notif_mail_solr_auth_id'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Solr field for authors ID'),
+        '#default_value' => variable_get('lib4ri_notif_mail_solr_auth_id', ''),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+
+    $form['lib4ri_notif_mail_solr_auth_fullname'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Solr field for authors full name'),
+        '#default_value' => variable_get('lib4ri_notif_mail_solr_auth_fullname', 'MADS_fullname_mt'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
+
+    $form['lib4ri_notif_mail_solr_auth_mail'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Solr field for authors e-mail'),
+        '#default_value' => variable_get('lib4ri_notif_mail_solr_auth_mail', 'MADS_email_mt'),
+        '#description' => t(''),
+        '#required' => TRUE,
+    );
     
     return system_settings_form($form);
 }
