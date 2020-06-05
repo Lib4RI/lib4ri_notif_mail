@@ -34,6 +34,22 @@ function get_object_id($nid, $sid){
     return($sub_ids);
 }
 
+function get_comment($nid, $sid){
+    //get submission id
+    $res = db_select('lib4ri_notif_mail_comments', 'n')
+    ->fields('n', array('object_id'))
+    ->condition('nid', $nid)
+    ->condition('sid', $sid)
+    ->execute();
+    
+    $comms = array();
+    foreach ($res as $comm) {
+        $comms[] = array(
+            'commnent' => t($comm->comment),
+        );
+    }
+    return($comms);
+}
 function _get_addr_default_datastream($object, $field_var){
      if (module_exists('lib4ri_staged_ingest')) {
          module_load_include('module', 'lib4ri_staged_ingest', 'lib4ri_staged_ingest');

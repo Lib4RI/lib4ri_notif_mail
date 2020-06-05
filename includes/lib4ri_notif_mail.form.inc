@@ -629,3 +629,25 @@ Viele Grüsse
     
     return system_settings_form($form);
 }
+
+function lib4ri_notif_mail_comment_form($form, &$form_state) {
+    $form['comment'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Comment'),
+        '#required' => FALSE,
+    );
+    
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Insert',
+    );
+    
+    return $form;
+}
+
+function lib4ri_notif_mail_comment_form_submit($form, &$form_state) {
+    
+    module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+    
+    
+}

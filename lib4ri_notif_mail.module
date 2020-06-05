@@ -79,6 +79,16 @@ function lib4ri_notif_mail_menu() {
 //         'type' => MENU_CALLBACK,
 //         'file' => 'lib4ri_notif_mail.query.inc',
 //     );
+
+    $items['islandora/lib4ri_notif_mail/remarks'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('lib4ri_notif_mail_comment_form'),
+        'access arguments' => array('lib4ri_notif_mail'),
+        'type' => MENU_CALLBACK,
+        'file' => 'includes/lib4ri_notif_mail.form.inc',
+    );
+    
+    
     return $items;
 }
 
@@ -241,7 +251,31 @@ function lib4ri_notif_mail_views_data() {
         'help' => t('DORA Publication.'),
         'field' => array(
             'handler' => 'lib4ri_notif_mail_handler_field_custom_handler',
+            'click sortable' => TRUE,
         ),
+        'filter' => array(
+            'handler' => 'views_handler_filter_string',
+        ),
+        'sort' => array(
+            'handler' => 'views_handler_sort_string',
+        ),
+        
+    );
+
+    $data['custom']['comment_handler'] = array(
+        'title' => t('Submission comment'),
+        'help' => t('Submission comment.'),
+        'field' => array(
+            'handler' => 'lib4ri_notif_mail_handler_field_comment_handler',
+            'click sortable' => TRUE,
+        ),
+        'filter' => array(
+            'handler' => 'views_handler_filter_string',
+        ),
+        'sort' => array(
+            'handler' => 'views_handler_sort_string',
+        ),
+        
     );
     
     return $data;

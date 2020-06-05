@@ -79,6 +79,25 @@ function lib4ri_notif_mail_schema() {
             )
      );
         
+        $schema['lib4ri_notif_mail_comments'] = array(
+            'description' => '-',
+            'fields' => array(
+                'sid' => array(
+                    'type' => 'int',
+                    'unsigned' => TRUE,
+                ),
+                'nid' => array(
+                    'type' => 'int',
+                    'unsigned' => TRUE,
+                ),
+                'comment' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                ),
+            ),
+            
+        );
+        
     return $schema;
 }
 
@@ -114,4 +133,26 @@ function lib4ri_notif_mail_update_7001(&$sandbox) {
     );
     
     db_create_table('lib4ri_notif_mail_lib4ridora_webform', $schema['lib4ri_notif_mail_lib4ridora_webform']);
+    
+    $schema['lib4ri_notif_mail_comments'] = array(
+        'description' => '-',
+        'fields' => array(
+            'sid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+            ),
+            'nid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+            ),
+            'comment' => array(
+                'type' => 'varchar',
+                'length' => 255,
+            ),
+        ),
+        
+    );
+    
+    db_create_table('lib4ri_notif_mail_comments', $schema['lib4ri_notif_mail_comments']);
+    
 }
