@@ -76,9 +76,14 @@ class lib4ri_notif_mail_handler_field_comment_handler extends views_handler_fiel
     
     function render($values) {
         // Render your content.
+        $nid = $values->webform_submissions_nid;
+        $sid = $values->sid;
         module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
-        
-        
+        $comment = get_comment($nid, $sid)[0];
+        if (!empty($comment['comment'])){
+            $comment['comment'] .= "<br>";
+        }
+        $ret = $comment['comment'].l(t('Add/Edit comment'),'islandora/lib4ri_notif_mail/remarks', array('query' => array('sid'=>$sid,'nid'=>$nid)));
         return $ret;
     }
 }

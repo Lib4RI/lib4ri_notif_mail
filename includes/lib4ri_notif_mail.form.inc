@@ -645,9 +645,21 @@ function lib4ri_notif_mail_comment_form($form, &$form_state) {
     return $form;
 }
 
+function lib4ri_notif_mail_form_lib4ri_notif_mail_comment_form_alter(&$form, &$form_state) {
+    module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+    $nid = trim($_GET['nid'],'_');
+    $sid = trim($_GET['sid'],'_');
+    
+    $form['comment']['#default_value'] = get_comment($nid, $sid)[0]['comment'];
+    
+    return $form;
+}
+
 function lib4ri_notif_mail_comment_form_submit($form, &$form_state) {
     
     module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+    $nid = trim($_GET['nid'],'_');
+    $sid = trim($_GET['sid'],'_');
     
-    
+    edit_comment($nid, $sid, $form_state['values']['comment']);
 }
