@@ -636,6 +636,12 @@ function lib4ri_notif_mail_comment_form($form, &$form_state) {
         '#title' => t('Comment'),
         '#required' => FALSE,
     );
+
+    $form['referer'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Referer'),
+        '#required' => FALSE,
+    );
     
     $form['submit'] = array(
         '#type' => 'submit',
@@ -646,12 +652,14 @@ function lib4ri_notif_mail_comment_form($form, &$form_state) {
 }
 
 function lib4ri_notif_mail_form_lib4ri_notif_mail_comment_form_alter(&$form, &$form_state) {
-    module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
-    $nid = trim($_GET['nid'],'_');
-    $sid = trim($_GET['sid'],'_');
-    
-    $form['comment']['#default_value'] = get_comment($nid, $sid)[0]['comment'];
-    
+    if(sizeof($form_state['input']) == 0){
+        module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+        $nid = trim($_GET['nid'],'_');
+        $sid = trim($_GET['sid'],'_');
+        
+        $form['comment']['#default_value'] = get_comment($nid, $sid)[0]['comment'];
+        $form['referer']['#default_value'] = $_SERVER['HTTP_REFERER'];
+    }
     return $form;
 }
 
@@ -661,5 +669,9 @@ function lib4ri_notif_mail_comment_form_submit($form, &$form_state) {
     $nid = trim($_GET['nid'],'_');
     $sid = trim($_GET['sid'],'_');
     
-    edit_comment($nid, $sid, $form_state['values']['comment']);
+    if ((!empty($nid)) && (!empty($sid)) ){
+        edit_comment($nid, $sid, $form_state['values']['comment']);
+    }
+    
+    drupal_goto($form_state['values']['referer']);
 }
