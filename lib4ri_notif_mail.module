@@ -205,13 +205,16 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
        
     if (webform_results_access($node)) {
         global $base_url;
+        // 2021-11-05: Lothar wanted to have to proper persistant link/url created/promoted even on the main-site.
+        global $base_path;		// is just '/' on the main site
+		$instAux = ( strlen($base_path) > 2 ? '' /* on a sub-site, nothing to add */ : strtok(strtr($id[obj_id],'-',':').':',':').'/' /* on main-site: add inst. taken from PID */ );
         $subsite = '';
         $biblio = variable_get('lib4ri_notif_mail_webform_bibliography');
         foreach ($node->webform['components'] as $key => $value){
             if ($value['form_key'] == $biblio)
                 $subsite = strtolower($submission->data[$key][0]);
         }
-        $url = $base_url.'/islandora/object/'.$subsite.'%3Apublications/manage/overview/ingest';
+        $url = $base_url.'/'. /* $instAux . */ 'islandora/object/'.$subsite.'%3Apublications/manage/overview/ingest';
         
         $actions['ingest'] = array(
             'title' => t('Ingest the publication'),
@@ -223,7 +226,7 @@ function lib4ri_notif_mail_webform_submission_actions($node, $submission) {
         $obj_ids = get_object_id($node->nid, $submission->sid);
         
         foreach ($obj_ids as $key => $id){
-            $url = 'islandora/object/'.$id[obj_id];
+            $url = $instAux.'islandora/object/'.$id[obj_id];
             $actions[$id[obj_id]] = array(
                 'title' => t(variable_get('lib4ri_notif_mail_webform_pub_link_text').$id[obj_id]),
                 'href' => $url,

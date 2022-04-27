@@ -62,6 +62,7 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
         '#type' => 'submit',
         '#value' => t('Next'),
         '#id' => 'edit-send',
+        '#suffix' => '<br><br>',
     );
     
     return $form;
@@ -71,20 +72,15 @@ function lib4ri_notif_mail_send_form($form, &$form_state) {
     
   global $user;
   module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
-  $pid = $_GET['id'];
-  $lang = $_GET['lang'];
+  $pid = strip_tags($_GET['id']);
+  $lang = strip_tags($_GET['lang']);
   if (!empty($pid)){
       $object = islandora_object_load($pid);
-      if (isset($_GET['file'])){
-        $filename = $_GET['file'];
-      }
-      else {
-          $filename = NULL;
-      }
+      $filename = ( isset($_GET['file']) ? strip_tags($_GET['file']) : NULL );
       $replacements_data = get_tokens_data($object, $form_state);
   }
   else{
-      $object=NULL;
+      $object = NULL;
       $filename = NULL;
   }
 //  $mods = islandora_bibliography_get_mods($object->id);

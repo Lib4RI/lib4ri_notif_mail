@@ -228,13 +228,17 @@ function get_body_default(AbstractObject $object, $lang, $replacement_data, $rem
 function get_tokens_data(AbstractObject $object, &$form_state){
     global $user;
     global $base_url;
+    global $base_path;		// is just '/' on the main site
+    // 2021-11-05: Lothar wanted to have to proper persistant link/url created/promoted even on the main-site.
+    $instAux = ( strlen($base_path) > 2 ? '' /* on a sub-site, nothing to add */ : strtok(strtr($object->id,'-',':').':',':').'/' /* on main-site: add inst. taken from PID */ );
+
     $len = variable_get('lib4ri_notif_mail_subj_trunc');
     if (empty($object)) {return '';}
-    if (variable_get('lib4ri_notif_mail_webform_htme2txt') == 'remove')
+    if (variable_get('lib4ri_notif_mail_webform_htme2txt') == 'remove') {
         $long = trim(strip_tags(html_entity_decode($object->label)));
-    else
+    } else {
         $long = trim(str_replace("\n", ' ',drupal_html_to_text($object->label)));
-    
+    }
     $short = $long;
     $point = 0;
     if (strlen($short)>$len){
@@ -255,7 +259,7 @@ function get_tokens_data(AbstractObject $object, &$form_state){
     $data = array('title' => $long,
                   'titleshort' => $short,
                   'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
-                  'objecturl' => url("$base_url/islandora/object/{$object->id}"),
+                  'objecturl' => url($base_url.'/'.$instAux.'islandora/object/'.$object->id),
                   'submission_reminder' => $reminder,
                   'openaccesstext' => get_open_access_text($form_state),
                   'workflowtext' => get_workflow_text($form_state),
