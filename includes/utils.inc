@@ -204,8 +204,9 @@ function get_bcc_default(){
 /**
  * Custom function to get default Subject.
  */
-function get_subject_default(AbstractObject $object, $lang, $replacement_data){
-    if ($lang == 'de'){$subject = token_replace(variable_get('lib4ri_notif_mail_subject_de'), $replacement_data);}
+function get_subject_default(AbstractObject $object, $lang, $replacement_data, $reminder){
+    if ($reminder){$subject = token_replace(variable_get('lib4ri_notif_mail_reminder_subject'), $replacement_data);}
+    elseif ($lang == 'de'){$subject = token_replace(variable_get('lib4ri_notif_mail_subject_de'), $replacement_data);}
     else{$subject = token_replace(variable_get('lib4ri_notif_mail_subject_en'), $replacement_data);}
     
     return $subject;
@@ -214,10 +215,11 @@ function get_subject_default(AbstractObject $object, $lang, $replacement_data){
 /**
  * Custom function to get default body.
  */
-function get_body_default(AbstractObject $object, $lang, $replacement_data){
+function get_body_default(AbstractObject $object, $lang, $replacement_data, $reminder){
     if (empty($object)) {return '';}
     
-    if ($lang == 'de'){$rows = token_replace(variable_get('lib4ri_notif_mail_body_de'), $replacement_data);}
+    if ($reminder){$rows = token_replace(variable_get('lib4ri_notif_mail_reminder_body'), $replacement_data);}
+    elseif ($lang == 'de'){$rows = token_replace(variable_get('lib4ri_notif_mail_body_de'), $replacement_data);}
     else{$rows = token_replace(variable_get('lib4ri_notif_mail_body_en'), $replacement_data);}
     
     return $rows;

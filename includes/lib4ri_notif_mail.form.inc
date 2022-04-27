@@ -18,6 +18,12 @@ function lib4ri_notif_mail_form($form, &$form_state) {
 
 function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
     module_load_include('inc', 'lib4ri_notif_mail', 'includes/utils');
+
+    $form['lib4ri_notif_mail_choose_reminder'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Reminder'),
+        '#default_value' => FALSE,
+    );
     
     $form['lib4ri_notif_mail_choose_ingest'] = array(
         '#type' => 'radios',
@@ -28,6 +34,11 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
         ),
 //        '#default_value' => variable_get('lib4ri_notif_mail_choose_ingest', 'int'),
         '#default_value' => get_choose_ingest_default(),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_choose_reminder"]' => array('checked' => FALSE),
+            ),
+        ),
     );
 
     $form['lib4ri_notif_mail_choose_oa'] = array(
@@ -39,6 +50,12 @@ function lib4ri_notif_mail_choose_content_form($form, &$form_state) {
             'ca' => variable_get('lib4ri_notif_mail_nooa_txt')
         ),
         '#default_value' => variable_get('lib4ri_notif_mail_choose_oa', 'oa'),
+        '#states' => array(
+            'visible' => array(
+                ':input[name="lib4ri_notif_mail_choose_reminder"]' => array('checked' => FALSE),
+            ),
+        ),
+        
     );
     
     $form['next'] = array(
@@ -162,8 +179,9 @@ function lib4ri_notif_mail_send_form($form, &$form_state) {
           $form['to_id']['#default_value'] = get_to_default($object);
           $form['cc']['#default_value'] = get_cc_default($object);
       }
-      $form['subject']['#default_value'] = get_subject_default($object, $lang, $replacements_data);
-      $form['body']['#default_value'] = get_body_default($object, $lang, $replacements_data);
+      $reminder = $form_state['values']['lib4ri_notif_mail_choose_reminder'];
+      $form['subject']['#default_value'] = get_subject_default($object, $lang, $replacements_data, $reminder);
+      $form['body']['#default_value'] = get_body_default($object, $lang, $replacements_data, $reminder);
   }
     return $form;
 }
@@ -505,6 +523,21 @@ Viele Grüsse
         '#title' => t('Submission form reminder'),
         '#default_value' => variable_get('lib4ri_notif_mail_sub_reminder', 'For further submissions, please use our new submission form '.$base_url.'/submit'),
         '#description' => t('The text to display to remind users to use the submission form'),
+    );
+    
+    $form['lib4ri_notif_mail_reminder_subject'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Email subject (reminder)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_reminder_subject', ''),
+        '#description' => t(''),
+    );
+    
+    $form['lib4ri_notif_mail_reminder_body'] = array(
+        '#type' => 'textarea',
+        '#size' => 100,
+        '#title' => t('Email body (reminder)'),
+        '#default_value' => variable_get('lib4ri_notif_mail_reminder_body', ''),
+        '#description' => t(''),
     );
     
     $form['lib4ri_notif_mail_sig_fname'] = array(
