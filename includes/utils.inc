@@ -247,7 +247,9 @@ function get_tokens_data(AbstractObject $object, &$form_state){
             $prev = $point;
             $point = strpos($short, ' ', $point+1);
         }
-        $short = substr($short, 0, $point).'...';
+        if ($point < strlen($long)){
+            $short = substr($short, 0, $point).'...';
+        }
     }
     
     $sids = get_submission_id($object);
