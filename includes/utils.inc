@@ -263,7 +263,7 @@ function get_tokens_data(AbstractObject $object, &$form_state){
                   'titleshort' => $short,
                   'signature' => field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_fname'))[0]['value'].' '.field_get_items('user',user_load($user->uid),variable_get('lib4ri_notif_mail_sig_lname'))[0]['value'],
 //                  'objecturl' => url($base_url.'/'.$instAux.'islandora/object/'.$object->id),
-                  'objecturl' => url('https://www.dora.lib4ri.ch/'.$subsite.'/'.$object->id),
+                  'objecturl' => url('https://www.dora.lib4ri.ch/'.$subsite.'/item/'.$object->id),
                   'submission_reminder' => $reminder,
                   'openaccesstext' => get_open_access_text($form_state),
                   'workflowtext' => get_workflow_text($form_state),
