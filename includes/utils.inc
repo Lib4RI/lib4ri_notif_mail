@@ -274,7 +274,7 @@ function get_tokens_data(AbstractObject $object, &$form_state){
 
 function is_notified($id){
     $query = db_select('lib4ri_notif_mail_sent', 'n')
-    ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', subject))
+    ->fields('n', array('tstmp', 'mailto', 'cc', 'bcc', 'subject'))
     ->condition('pubid', $id)
     ->orderBy('tstmp', 'DESC') //Most recent first.
     ->execute();
